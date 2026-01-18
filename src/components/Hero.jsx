@@ -97,6 +97,9 @@ export function Hero() {
 
             {/* Decorative Glows */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[40vw] h-[40vw] bg-accent-neon/5 rounded-full blur-[10vw] pointer-events-none"></div>
+
+            {/* Seamless Bottom Fade */}
+            <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background to-transparent pointer-events-none z-20" />
         </section>
     )
 }

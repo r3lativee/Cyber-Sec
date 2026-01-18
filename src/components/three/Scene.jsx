@@ -1,147 +1,217 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
+
+const vertexShader = `
+  uniform float uTime;
+  uniform vec2 uMouse;
+  uniform float uTransition;
+  uniform float uPixelRatio;
+
+  attribute float aSize;
+  attribute vec3 aSource;
+  attribute vec3 aTarget;
+  attribute float aRandom;
+  attribute float aIsShape;
+
+  varying float vOpacity;
+
+  void main() {
+    // 1. Determine base position
+    vec3 basePos = mix(aSource, aTarget, uTransition);
+
+    // 2. Slow Organic Noise
+    float noiseX = sin(uTime * 0.1 + aRandom * 100.0) * 0.4;
+    float noiseY = cos(uTime * 0.1 + aRandom * 100.0) * 0.4;
+    float noiseZ = sin(uTime * 0.12 + aRandom * 100.0) * 0.4;
+    basePos += vec3(noiseX, noiseY, noiseZ);
+
+    // 2.1 LOCAL CIRCULAR ORBIT (Active when shape is formed)
+    // We rotate the basePos around the Z-axis slowly
+    if (uTransition > 0.1) {
+        float orbitAngle = uTime * 0.1 * uTransition;
+        float s = sin(orbitAngle);
+        float c = cos(orbitAngle);
+        float nx = basePos.x * c - basePos.y * s;
+        float ny = basePos.x * s + basePos.y * c;
+        basePos.x = nx;
+        basePos.y = ny;
+    }
+
+    // 3. INTERACTION: Smooth Surface Spread (Repulsion)
+    // Project mouse to world center plane
+    vec3 mousePos = vec3(uMouse.x * 25.0, uMouse.y * 18.0, 0.0);
+    float dist = distance(basePos, mousePos);
+    
+    // Spread Radius
+    float spreadRadius = 7.0;
+    float push = smoothstep(spreadRadius, 0.0, dist);
+    
+    // Direction points AWAY from the mouse center
+    vec3 dir = normalize(basePos - mousePos);
+    
+    // Reduced power and more "flat" spread feel
+    vec3 finalPos = basePos + (dir * push * 3.5);
+
+    // Fade edges
+    vOpacity = (smoothstep(45.0, 15.0, length(finalPos)) * 0.3 + 0.1) * (aIsShape > 0.5 ? 1.0 : 0.5);
+
+    vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
+    
+    // Micro-particles
+    gl_PointSize = aSize * uPixelRatio * (90.0 / -mvPosition.z);
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`
+
+const fragmentShader = `
+  varying float vOpacity;
+  
+  void main() {
+    float r = distance(gl_PointCoord, vec2(0.5));
+    if (r > 0.48) discard;
+    
+    gl_FragColor = vec4(1.0, 1.0, 1.0, vOpacity);
+  }
+`
 
 export function Scene() {
     const meshRef = useRef()
-    const { viewport, mouse: r3fMouse } = useThree()
+    const { size } = useThree()
     const [iconIndex, setIconIndex] = useState(0)
-    const [transition, setTransition] = useState(0)
 
-    const count = 1800 // Higher count for better volume
+    const count = 10000
+    const shapeCount = 8000
+    const pixelRatio = size.width > 0 ? Math.min(window.devicePixelRatio, 2) : 1
 
-    const particles = useMemo(() => {
-        const temp = []
+    const [positions, sources, targets, sizes, randoms, isShape] = useMemo(() => {
+        const pos = new Float32Array(count * 3)
+        const src = new Float32Array(count * 3)
+        const tar = new Float32Array(count * 3)
+        const sz = new Float32Array(count)
+        const rd = new Float32Array(count)
+        const ish = new Float32Array(count)
+
         for (let i = 0; i < count; i++) {
-            const x = (Math.random() - 0.5) * 60
-            const y = (Math.random() - 0.5) * 45
-            const z = (Math.random() - 0.5) * 20
+            const x = (Math.random() - 0.5) * 65
+            const y = (Math.random() - 0.5) * 50
+            const z = (Math.random() - 0.5) * 15
 
-            temp.push({
-                id: i,
-                cloudPos: new THREE.Vector3(x, y, z),
-                currentSource: new THREE.Vector3(x, y, z),
-                currentTarget: new THREE.Vector3(x, y, z),
-                rnd: Math.random(),
-                sz: 0.02 + Math.random() * 0.04
-            })
+            pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z
+            src[i * 3] = x; src[i * 3 + 1] = y; src[i * 3 + 2] = z
+            tar[i * 3] = x; tar[i * 3 + 1] = y; tar[i * 3 + 2] = z
+
+            sz[i] = 0.15 + Math.random() * 0.3
+            rd[i] = Math.random()
+            ish[i] = i < shapeCount ? 1.0 : 0.0
         }
-        return temp
+        return [pos, src, tar, sz, rd, ish]
     }, [])
 
-    const updateTargetVec = (index, i, vec) => {
-        const p = particles[i]
-        if (index === 0) { // Idle Cloud
-            vec.copy(p.cloudPos)
-        } else if (index === 1) { // Brackets
-            const seg = i % 300
-            if (seg < 100) vec.set(-8 + (seg < 50 ? seg * 0.08 : (100 - seg) * 0.08), (seg - 50) * 0.15, 0)
-            else if (seg < 200) vec.set((seg - 150) * 0.04, (seg - 150) * 0.2, 0)
-            else vec.set(8 - (seg < 250 ? (seg - 200) * 0.08 : (300 - seg) * 0.08), (seg - 250) * 0.15, 0)
-        } else if (index === 2) { // 3D Cube
-            const side = i % 12
-            const t = (Math.random() - 0.5) * 12
-            const s = 6
-            if (side === 0) vec.set(-s, -s, t)
-            else if (side === 1) vec.set(s, -s, t)
-            else if (side === 2) vec.set(-s, s, t)
-            else if (side === 3) vec.set(s, s, t)
-            else if (side === 4) vec.set(t, -s, -s)
-            else if (side === 5) vec.set(t, s, -s)
-            else if (side === 6) vec.set(t, -s, s)
-            else if (side === 7) vec.set(t, s, s)
-            else if (side === 8) vec.set(-s, t, -s)
-            else if (side === 9) vec.set(s, t, -s)
-            else if (side === 10) vec.set(-s, t, s)
-            else vec.set(s, t, s)
-        } else { // Large Grid
-            const st = 6
-            vec.set(((i % 12) - 5.5) * st, ((Math.floor(i / 12) % 10) - 4.5) * st, ((Math.floor(i / 120) % 5) - 2) * st)
+    // High-End Wireframe Shape Generators
+    const getShape = (index, i, vec) => {
+        if (i >= shapeCount) {
+            vec.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
+            return
+        }
+
+        if (index === 0) {
+            // 1. Torus Knot (Wireframe nodes)
+            const t = (i / shapeCount) * Math.PI * 2 * 10
+            const p = 2, q = 3, r = 6
+            const x = r * (2 + Math.cos(q * t)) * Math.cos(p * t)
+            const y = r * (2 + Math.cos(q * t)) * Math.sin(p * t)
+            const z = r * Math.sin(q * t)
+            vec.set(x * 0.5, y * 0.5, z * 0.5)
+        } else if (index === 1) {
+            // 2. Nested Platonic Rings
+            const ring = i % 4
+            const theta = Math.random() * Math.PI * 2
+            const r = 8 + ring * 2
+            if (ring === 0) vec.set(Math.cos(theta) * r, Math.sin(theta) * r, 0)
+            else if (ring === 1) vec.set(Math.cos(theta) * r, 0, Math.sin(theta) * r)
+            else if (ring === 2) vec.set(0, Math.cos(theta) * r, Math.sin(theta) * r)
+            else vec.set(Math.cos(theta) * r * 0.7, Math.sin(theta) * r * 0.7, Math.cos(theta) * r * 0.7)
+        } else if (index === 2) {
+            // 3. Technical Grid Sphere (Icosahedron-ish)
+            const phi = Math.acos(-1 + (2 * i) / shapeCount)
+            const theta = Math.sqrt(shapeCount * Math.PI) * phi
+            const r = 10
+            vec.set(
+                r * Math.cos(theta) * Math.sin(phi),
+                r * Math.sin(theta) * Math.sin(phi),
+                r * Math.cos(phi)
+            )
         }
     }
 
-    const dummy = new THREE.Object3D()
-    const workVec = new THREE.Vector3()
-    const mouseVec = new THREE.Vector3()
+    const uniforms = useMemo(() => ({
+        uTime: { value: 0 },
+        uMouse: { value: new THREE.Vector2(0, 0) },
+        uTransition: { value: 0 },
+        uPixelRatio: { value: pixelRatio }
+    }), [])
 
     useFrame((state) => {
         const { clock, mouse } = state
-        const time = clock.getElapsedTime()
+        uniforms.uTime.value = clock.getElapsedTime()
 
-        // Smooth Transition State
-        if (transition < 1) {
-            setTransition(prev => Math.min(1, prev + 0.003))
+        if (uniforms.uTransition.value < 1) {
+            uniforms.uTransition.value += 0.003
         }
 
-        // INTERACTION FIX: Manual mouse mapping to world units
-        // viewport.width/height gives us the world dimensions at the camera focus
-        mouseVec.set(mouse.x * (viewport.width / 2), mouse.y * (viewport.height / 2), 0)
+        uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.08)
+        uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, mouse.y, 0.08)
 
-        particles.forEach((p, i) => {
-            updateTargetVec(iconIndex, i, p.currentTarget)
-
-            // Interpolate Morphs
-            workVec.lerpVectors(p.currentSource, p.currentTarget, transition)
-
-            // Subtle Floating
-            workVec.x += Math.sin(time * 0.15 + p.rnd * 15) * 0.3
-            workVec.y += Math.cos(time * 0.15 + p.rnd * 15) * 0.3
-
-            // MOUSE INTERACTION: Strong break-away effect
-            const dist = workVec.distanceTo(mouseVec)
-            const threshold = 12 // Increased interaction radius
-            if (dist < threshold) {
-                const factor = Math.pow(1 - (dist / threshold), 1.5)
-                // Move towards original cloud positions (breaking the shape)
-                workVec.lerp(p.cloudPos, factor * 0.95)
-                // Add a slight tilt/parallax towards mouse
-                workVec.add(new THREE.Vector3().subVectors(mouseVec, workVec).multiplyScalar(factor * 0.4))
-            }
-
-            dummy.position.copy(workVec)
-            dummy.scale.setScalar(p.sz)
-            dummy.updateMatrix()
-            meshRef.current.setMatrixAt(i, dummy.matrix)
-        })
-
-        meshRef.current.instanceMatrix.needsUpdate = true
-
-        // Parallax the whole scene based on mouse
-        meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.2, 0.05)
-        meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.2, 0.05)
+        if (meshRef.current) {
+            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.15, 0.05)
+            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.15, 0.05)
+        }
     })
 
     useEffect(() => {
         const interval = setInterval(() => {
-            particles.forEach((p, i) => {
-                updateTargetVec(iconIndex, i, p.currentSource)
-            })
-            setIconIndex((iconIndex + 1) % 4)
-            setTransition(0)
+            if (!meshRef.current) return
+            const src = meshRef.current.geometry.attributes.aSource.array
+            const tar = meshRef.current.geometry.attributes.aTarget.array
+            const workVec = new THREE.Vector3()
+
+            for (let i = 0; i < count * 3; i++) src[i] = tar[i]
+            meshRef.current.geometry.attributes.aSource.needsUpdate = true
+
+            const next = (iconIndex + 1) % 3
+            for (let i = 0; i < count; i++) {
+                getShape(next, i, workVec)
+                tar[i * 3] = workVec.x
+                tar[i * 3 + 1] = workVec.y
+                tar[i * 3 + 2] = workVec.z
+            }
+            meshRef.current.geometry.attributes.aTarget.needsUpdate = true
+
+            uniforms.uTransition.value = 0
+            setIconIndex(next)
         }, 12000)
         return () => clearInterval(interval)
     }, [iconIndex])
 
     return (
-        <group>
-            <Environment preset="studio" />
-            <instancedMesh ref={meshRef} args={[null, null, count]}>
-                <sphereGeometry args={[1, 6, 6]} />
-                <meshPhysicalMaterial
-                    color="#ffffff"
-                    transparent
-                    opacity={0.6}
-                    metalness={1}
-                    roughness={0}
-                    transmission={0.9}
-                    thickness={2}
-                    envMapIntensity={3}
-                />
-            </instancedMesh>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[50, 50, 50]} angle={0.15} penumbra={1} intensity={2} color="#ffffff" />
-            <pointLight position={[-30, -30, 20]} intensity={1.5} color="#4FD1FF" />
-        </group>
+        <points ref={meshRef}>
+            <bufferGeometry>
+                <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+                <bufferAttribute attach="attributes-aSource" count={count} array={sources} itemSize={3} />
+                <bufferAttribute attach="attributes-aTarget" count={count} array={targets} itemSize={3} />
+                <bufferAttribute attach="attributes-aSize" count={count} array={sizes} itemSize={1} />
+                <bufferAttribute attach="attributes-aRandom" count={count} array={randoms} itemSize={1} />
+                <bufferAttribute attach="attributes-aIsShape" count={count} array={isShape} itemSize={1} />
+            </bufferGeometry>
+            <shaderMaterial
+                vertexShader={vertexShader}
+                fragmentShader={fragmentShader}
+                uniforms={uniforms}
+                transparent
+                depthWrite={false}
+                blending={THREE.AdditiveBlending}
+            />
+        </points>
     )
 }

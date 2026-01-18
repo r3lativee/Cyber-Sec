@@ -1,10 +1,28 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Send, Github, Linkedin, Twitter, Download } from 'lucide-react'
+import { Canvas } from '@react-three/fiber'
+import { Scene } from './three/Scene'
+import { Suspense } from 'react'
 
 export function Contact() {
     return (
-        <section id="contact" className="relative min-h-screen py-32 px-6 bg-background overflow-hidden">
+        <section id="contact" className="relative min-h-screen py-32 px-6 bg-[#050505] overflow-hidden">
+            <div className="absolute inset-0 z-0">
+                <Canvas
+                    camera={{ position: [0, 0, 15], fov: 75 }}
+                    gl={{ antialias: true, alpha: true }}
+                    dpr={[1, 2]}
+                >
+                    <Suspense fallback={null}>
+                        <Scene />
+                    </Suspense>
+                </Canvas>
+            </div>
+
+            {/* Seamless Top Fade */}
+            <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
+
             <div className="max-w-7xl mx-auto flex flex-col items-center justify-center text-center h-full">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
