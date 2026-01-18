@@ -56,9 +56,11 @@ function App() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         {hasWebGL ? (
           <Canvas
-            camera={{ position: [0, 0, 5], fov: 45 }}
+            camera={{ position: [0, 0, 15], fov: 75 }}
             gl={{ antialias: true, alpha: true }}
             dpr={[1, 2]}
+            eventSource={typeof document !== 'undefined' ? document.body : null}
+            eventPrefix="client"
           >
             <Suspense fallback={null}>
               <Scene />

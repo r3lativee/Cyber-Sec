@@ -1,164 +1,147 @@
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useState, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
-
-const vertexShader = `
-  varying vec2 vUv;
-  varying float vLife;
-  uniform float uTime;
-  uniform vec2 uMouse;
-  attribute float aLife;
-  attribute float aSize;
-
-  vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-  vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-  vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-  float snoise(vec3 v) {
-    const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
-    const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
-    vec3 i  = floor(v + dot(v, C.yyy) );
-    vec3 x0 =   v - i + dot(i, C.xxx) ;
-    vec3 g = step(x0.yzx, x0.xyz);
-    vec3 l = 1.0 - g;
-    vec3 i1 = min( g.xyz, l.zxy );
-    vec3 i2 = max( g.xyz, l.zxy );
-    vec3 x1 = x0 - i1 + C.xxx;
-    vec3 x2 = x0 - i2 + C.yyy;
-    vec3 x3 = x0 - D.yyy;
-    i = mod289(i);
-    vec4 p = permute( permute( permute(
-              i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
-            + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
-            + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
-    float n_ = 0.142857142857;
-    vec3  ns = n_ * D.wyz - D.xzx;
-    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-    vec4 x_ = floor(j * ns.z);
-    vec4 y_ = floor(j - 7.0 * x_ );
-    vec4 x = x_ *ns.x + ns.yyyy;
-    vec4 y = y_ *ns.x + ns.yyyy;
-    vec4 h = 1.0 - abs(x) - abs(y);
-    vec4 b0 = vec4( x.xy, y.xy );
-    vec4 b1 = vec4( x.zw, y.zw );
-    vec4 s0 = floor(b0)*2.0 + 1.0;
-    vec4 s1 = floor(b1)*2.0 + 1.0;
-    vec4 sh = -step(h, vec4(0.0));
-    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
-    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
-    vec3 p0 = vec3(a0.xy,h.x);
-    vec3 p1 = vec3(a0.zw,h.y);
-    vec3 p2 = vec3(a1.xy,h.z);
-    vec3 p3 = vec3(a1.zw,h.w);
-    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-    p0 *= norm.x;
-    p1 *= norm.y;
-    p2 *= norm.z;
-    p3 *= norm.w;
-    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-    m = m * m;
-    return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
-                                  dot(p2,x2), dot(p3,x3) ) );
-  }
-
-  void main() {
-    vUv = uv;
-    vLife = aLife;
-    
-    vec3 pos = position;
-    
-    // Smooth floating noise
-    float noiseX = snoise(vec3(pos.x * 0.1, pos.y * 0.1, uTime * 0.2 + aLife));
-    float noiseY = snoise(vec3(pos.y * 0.1, pos.x * 0.1, uTime * 0.2 + aLife));
-    
-    pos.x += noiseX * 1.5;
-    pos.y += noiseY * 1.5;
-
-    // Displacement by mouse
-    float mouseDist = distance(pos.xy, uMouse);
-    float force = smoothstep(12.0, 0.0, mouseDist);
-    vec2 dir = normalize(pos.xy - uMouse);
-    pos.xy += dir * force * 4.0;
-    
-    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aSize * (400.0 / -mvPosition.z) * (0.8 + noiseX * 0.2);
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`
-
-const fragmentShader = `
-  varying vec2 vUv;
-  varying float vLife;
-  uniform vec3 uColor;
-
-  void main() {
-    float r = distance(gl_PointCoord, vec2(0.5));
-    if (r > 0.5) discard;
-    
-    float strength = 1.0 - (r * 2.0);
-    strength = pow(strength, 3.0);
-    
-    // Edge softening
-    gl_FragColor = vec4(uColor, strength * 0.4);
-  }
-`
 
 export function Scene() {
     const meshRef = useRef()
-    const { viewport } = useThree()
+    const { viewport, mouse: r3fMouse } = useThree()
+    const [iconIndex, setIconIndex] = useState(0)
+    const [transition, setTransition] = useState(0)
 
-    const count = 10000
-    const [positions, lives, sizes] = useMemo(() => {
-        const pos = new Float32Array(count * 3)
-        const lv = new Float32Array(count)
-        const sz = new Float32Array(count)
+    const count = 1800 // Higher count for better volume
+
+    const particles = useMemo(() => {
+        const temp = []
         for (let i = 0; i < count; i++) {
-            pos[i * 3] = (Math.random() - 0.5) * 60
-            pos[i * 3 + 1] = (Math.random() - 0.5) * 40
-            pos[i * 3 + 2] = (Math.random() - 0.5) * 10
-            lv[i] = Math.random()
-            sz[i] = 0.5 + Math.random() * 2.0
+            const x = (Math.random() - 0.5) * 60
+            const y = (Math.random() - 0.5) * 45
+            const z = (Math.random() - 0.5) * 20
+
+            temp.push({
+                id: i,
+                cloudPos: new THREE.Vector3(x, y, z),
+                currentSource: new THREE.Vector3(x, y, z),
+                currentTarget: new THREE.Vector3(x, y, z),
+                rnd: Math.random(),
+                sz: 0.02 + Math.random() * 0.04
+            })
         }
-        return [pos, lv, sz]
+        return temp
     }, [])
 
-    const uniforms = useMemo(() => ({
-        uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-        uColor: { value: new THREE.Color("#4FD1FF") }
-    }), [])
+    const updateTargetVec = (index, i, vec) => {
+        const p = particles[i]
+        if (index === 0) { // Idle Cloud
+            vec.copy(p.cloudPos)
+        } else if (index === 1) { // Brackets
+            const seg = i % 300
+            if (seg < 100) vec.set(-8 + (seg < 50 ? seg * 0.08 : (100 - seg) * 0.08), (seg - 50) * 0.15, 0)
+            else if (seg < 200) vec.set((seg - 150) * 0.04, (seg - 150) * 0.2, 0)
+            else vec.set(8 - (seg < 250 ? (seg - 200) * 0.08 : (300 - seg) * 0.08), (seg - 250) * 0.15, 0)
+        } else if (index === 2) { // 3D Cube
+            const side = i % 12
+            const t = (Math.random() - 0.5) * 12
+            const s = 6
+            if (side === 0) vec.set(-s, -s, t)
+            else if (side === 1) vec.set(s, -s, t)
+            else if (side === 2) vec.set(-s, s, t)
+            else if (side === 3) vec.set(s, s, t)
+            else if (side === 4) vec.set(t, -s, -s)
+            else if (side === 5) vec.set(t, s, -s)
+            else if (side === 6) vec.set(t, -s, s)
+            else if (side === 7) vec.set(t, s, s)
+            else if (side === 8) vec.set(-s, t, -s)
+            else if (side === 9) vec.set(s, t, -s)
+            else if (side === 10) vec.set(-s, t, s)
+            else vec.set(s, t, s)
+        } else { // Large Grid
+            const st = 6
+            vec.set(((i % 12) - 5.5) * st, ((Math.floor(i / 12) % 10) - 4.5) * st, ((Math.floor(i / 120) % 5) - 2) * st)
+        }
+    }
+
+    const dummy = new THREE.Object3D()
+    const workVec = new THREE.Vector3()
+    const mouseVec = new THREE.Vector3()
 
     useFrame((state) => {
         const { clock, mouse } = state
-        uniforms.uTime.value = clock.getElapsedTime()
+        const time = clock.getElapsedTime()
 
-        // Correct mouse scale for Three.js world coordinates
-        const targetX = mouse.x * (viewport.width / 2)
-        const targetY = mouse.y * (viewport.height / 2)
-
-        uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, targetX, 0.05)
-        uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, targetY, 0.05)
-
-        if (meshRef.current) {
-            meshRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.1) * 0.05
+        // Smooth Transition State
+        if (transition < 1) {
+            setTransition(prev => Math.min(1, prev + 0.003))
         }
+
+        // INTERACTION FIX: Manual mouse mapping to world units
+        // viewport.width/height gives us the world dimensions at the camera focus
+        mouseVec.set(mouse.x * (viewport.width / 2), mouse.y * (viewport.height / 2), 0)
+
+        particles.forEach((p, i) => {
+            updateTargetVec(iconIndex, i, p.currentTarget)
+
+            // Interpolate Morphs
+            workVec.lerpVectors(p.currentSource, p.currentTarget, transition)
+
+            // Subtle Floating
+            workVec.x += Math.sin(time * 0.15 + p.rnd * 15) * 0.3
+            workVec.y += Math.cos(time * 0.15 + p.rnd * 15) * 0.3
+
+            // MOUSE INTERACTION: Strong break-away effect
+            const dist = workVec.distanceTo(mouseVec)
+            const threshold = 12 // Increased interaction radius
+            if (dist < threshold) {
+                const factor = Math.pow(1 - (dist / threshold), 1.5)
+                // Move towards original cloud positions (breaking the shape)
+                workVec.lerp(p.cloudPos, factor * 0.95)
+                // Add a slight tilt/parallax towards mouse
+                workVec.add(new THREE.Vector3().subVectors(mouseVec, workVec).multiplyScalar(factor * 0.4))
+            }
+
+            dummy.position.copy(workVec)
+            dummy.scale.setScalar(p.sz)
+            dummy.updateMatrix()
+            meshRef.current.setMatrixAt(i, dummy.matrix)
+        })
+
+        meshRef.current.instanceMatrix.needsUpdate = true
+
+        // Parallax the whole scene based on mouse
+        meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.2, 0.05)
+        meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.2, 0.05)
     })
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            particles.forEach((p, i) => {
+                updateTargetVec(iconIndex, i, p.currentSource)
+            })
+            setIconIndex((iconIndex + 1) % 4)
+            setTransition(0)
+        }, 12000)
+        return () => clearInterval(interval)
+    }, [iconIndex])
+
     return (
-        <points ref={meshRef}>
-            <bufferGeometry>
-                <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-                <bufferAttribute attach="attributes-aLife" count={count} array={lives} itemSize={1} />
-                <bufferAttribute attach="attributes-aSize" count={count} array={sizes} itemSize={1} />
-            </bufferGeometry>
-            <shaderMaterial
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                uniforms={uniforms}
-                transparent
-                depthWrite={false}
-                blending={THREE.AdditiveBlending}
-            />
-        </points>
+        <group>
+            <Environment preset="studio" />
+            <instancedMesh ref={meshRef} args={[null, null, count]}>
+                <sphereGeometry args={[1, 6, 6]} />
+                <meshPhysicalMaterial
+                    color="#ffffff"
+                    transparent
+                    opacity={0.6}
+                    metalness={1}
+                    roughness={0}
+                    transmission={0.9}
+                    thickness={2}
+                    envMapIntensity={3}
+                />
+            </instancedMesh>
+            <ambientLight intensity={0.5} />
+            <spotLight position={[50, 50, 50]} angle={0.15} penumbra={1} intensity={2} color="#ffffff" />
+            <pointLight position={[-30, -30, 20]} intensity={1.5} color="#4FD1FF" />
+        </group>
     )
 }

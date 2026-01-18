@@ -3,30 +3,49 @@ import { motion } from 'framer-motion'
 
 const timeline = [
     {
-        year: '2025 - 2026',
-        role: 'UI/UX Designer',
-        company: 'Subroutes',
-        description: 'Directing the complete infrastructure migration to cloud-native solutions and implementing AI-driven ERP automation.'
+        year: '2024 - Present',
+        role: 'Design Lead & Creative Technologist',
+        company: 'Google Developer Groups (GDG) Guwahati',
+        description:
+            'Leading UI/UX and visual design initiatives for developer events and community programs. Delivering high-impact digital assets, mentoring designers, and driving cohesive design systems across cross-functional teams.'
     },
     {
-        year: '2025 - 2026',
-        role: 'Senior ERP Administrator',
-        company: 'St. Clares convent high school',
-        description: 'Spearheading digital transformation, managing massive user databases, and securing enterprise networks.'
+        year: '2024 - 2026',
+        role: 'IT Coordinator & ERP Administrator',
+        company: 'St. Clares Convent Senior Secondary School',
+        description:
+            'Managing ERP systems, CBSE portal operations, user databases, and digital workflows for a large-scale academic institution. Also handling digital marketing, content publishing, and technical operations across platforms.'
     },
     {
-        year: '2022 - 2026',
-        role: '3D Artist & Rendering Specialist',
+        year: '2024',
+        role: 'Front-End Developer',
+        company: 'Sous Itineraries International Pvt. Ltd.',
+        description:
+            'Designed and developed responsive React-based web applications for travel platforms. Improved performance, implemented payment integrations, and collaborated closely with product and backend teams.'
+    },
+    {
+        year: '2023 - Present',
+        role: '3D Artist & Visual Storyteller',
         company: 'Freelance',
-        description: 'Focused on cinematic product visualization, high-fidelity shader development, and architectural rendering.'
+        description:
+            'Creating cinematic product visualizations, 3D animations, and branded visual content for clients. Focused on high-fidelity rendering, motion design, and storytelling across digital platforms.'
     },
     {
-        year: '2021 - 2022',
-        role: '3D Artist & Rendering Specialist',
-        company: 'Visionary Studios',
-        description: 'Focused on cinematic product visualization, high-fidelity shader development, and architectural rendering.'
+        year: '2023',
+        role: '3D NFT Designer',
+        company: 'International Client (California)',
+        description:
+            'Designed and delivered 3D NFT assets and immersive scenes for a commercial NFT collection, contributing to a successful digital launch.'
+    },
+    {
+        year: '2022 - 2024',
+        role: 'Design Lead & Mentor',
+        company: 'Google Developer Students Club (GDSC)',
+        description:
+            'Led multiple UI/UX projects, mentored students through workshops, hackathons, and real-world projects, and played a key role in building a strong design-driven developer community.'
     }
 ]
+
 
 export function Experience() {
     return (
