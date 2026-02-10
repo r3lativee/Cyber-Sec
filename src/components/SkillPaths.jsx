@@ -16,30 +16,60 @@ const learningPaths = [
     }
 ]
 
+const FADE_UP_ANIMATION_VARIANTS = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            damping: 25,
+            stiffness: 100,
+            duration: 0.8
+        }
+    },
+}
+
 export function SkillPaths() {
     return (
         <section id="resources" className="relative py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
-                <div className="mb-20">
-                    <div className="flex items-center gap-3 mb-4">
+                <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={{
+                        show: {
+                            transition: {
+                                staggerChildren: 0.15
+                            }
+                        }
+                    }}
+                    className="mb-20"
+                >
+                    <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                         <span className="w-8 h-[1px] bg-primary"></span>
                         <span className="text-primary font-mono text-xs uppercase tracking-[0.4em] font-bold">
                             STRUCTURED LEARNING
                         </span>
-                    </div>
-                    <h2 className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
+                    </motion.div>
+                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
                         FOLLOW OUR <br /> <span className="text-primary ">LEARNING PATHS</span>
-                    </h2>
-                </div>
+                    </motion.h2>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {learningPaths.map((path, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: i * 0.1 }}
-                            viewport={{ once: true }}
+                            transition={{
+                                duration: 1,
+                                delay: i * 0.2,
+                                ease: [0.23, 1, 0.32, 1]
+                            }}
+                            viewport={{ once: true, margin: "-50px" }}
                             className="group relative bg-[#151D29] border border-white/5 p-1 transition-all duration-500 hover:border-primary/50"
                         >
                             {/* Accent indicator */}
@@ -74,3 +104,4 @@ export function SkillPaths() {
         </section>
     )
 }
+

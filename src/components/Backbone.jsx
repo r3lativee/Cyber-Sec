@@ -29,30 +29,60 @@ const platformFeatures = [
     }
 ]
 
+const FADE_UP_ANIMATION_VARIANTS = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            damping: 25,
+            stiffness: 100,
+            duration: 0.8
+        }
+    },
+}
+
 export function Backbone() {
     return (
         <section id="products" className="relative min-h-screen py-32 px-6 bg-background border-t border-white/5">
             <div className="max-w-7xl mx-auto">
-                <div className="mb-20">
-                    <div className="flex items-center gap-3 mb-4">
+                <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={{
+                        show: {
+                            transition: {
+                                staggerChildren: 0.15
+                            }
+                        }
+                    }}
+                    className="mb-20"
+                >
+                    <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                         <span className="w-8 h-[1px] bg-primary"></span>
                         <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
                             // SYSTEM ARCHITECTURE
                         </span>
-                    </div>
-                    <h2 className="text-5xl md:text-8xl font-bold font-heading tracking-tighter uppercase leading-none">
+                    </motion.div>
+                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-8xl font-bold font-heading tracking-tighter uppercase leading-none">
                         PLATFORM <br /> <span className="text-primary italic">INFRASTRUCTURE</span>
-                    </h2>
-                </div>
+                    </motion.h2>
+                </motion.div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {platformFeatures.map((feature, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            viewport={{ once: true }}
+                            transition={{
+                                duration: 1,
+                                delay: index * 0.1,
+                                ease: [0.23, 1, 0.32, 1]
+                            }}
+                            viewport={{ once: true, margin: "-50px" }}
                             className="group relative p-8 bg-[#151D29] border border-white/5 transition-all duration-300 hover:border-primary/40"
                         >
                             <div className="relative z-10">
@@ -80,7 +110,13 @@ export function Backbone() {
                 </div>
 
                 {/* Platform Engineering Details */}
-                <div className="mt-20 p-8 md:p-12 bg-[#0D1117] relative overflow-hidden border border-white/5">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+                    className="mt-20 p-8 md:p-12 bg-[#0D1117] relative overflow-hidden border border-white/5"
+                >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                         <div>
                             <h3 className="text-3xl font-bold mb-6 font-heading uppercase tracking-tight text-white italic">CORE CAPABILITIES</h3>
@@ -103,16 +139,23 @@ export function Backbone() {
                             </ul>
                         </div>
                         <div className="relative flex justify-center">
-                            <div className="w-full h-80 bg-primary/5 border border-primary/10 flex items-center justify-center relative overflow-hidden group">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 1, delay: 0.3 }}
+                                viewport={{ once: true }}
+                                className="w-full h-80 bg-primary/5 border border-primary/10 flex items-center justify-center relative overflow-hidden group"
+                            >
                                 <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#9FEF00_1px,transparent_1px)] [background-size:15px_15px]"></div>
                                 <Cpu className="w-32 h-32 text-primary/40 group-hover:text-primary transition-colors duration-700" />
                                 <div className="absolute top-4 right-4 text-[8px] font-mono opacity-30 text-primary uppercase font-bold tracking-widest bg-background px-2 py-1 border border-primary/20">SYSTEM_NOMINAL // 100%</div>
                                 <div className="absolute bottom-6 right-6 text-[10px] font-mono opacity-30 text-primary uppercase font-bold tracking-widest">INFRA_ORCHESTRATOR // VERSION_2026</div>
-                            </div>
+                            </motion.div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     )
 }
+

@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const labs = [
     {
@@ -52,7 +52,66 @@ const labs = [
     }
 ]
 
+function LabCard({ lab, index }) {
+    const [isExpanded, setIsExpanded] = useState(false)
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="group relative bg-[#151D29] border border-white/5 p-8 transition-all duration-300 hover:border-primary/40 flex flex-col"
+        >
+            <div className="flex justify-between items-start mb-6 font-mono text-[10px] font-bold tracking-widest uppercase">
+                <span className={`px-2 py-1 border ${lab.difficulty === 'EXPERT' ? 'text-red-500 border-red-500/20 bg-red-500/5' :
+                    lab.difficulty === 'HARD' ? 'text-orange-500 border-orange-500/20 bg-orange-500/5' :
+                        'text-yellow-500 border-yellow-500/20 bg-yellow-500/5'
+                    }`}>
+                    {lab.difficulty}
+                </span>
+                <span className="text-muted">{lab.duration}</span>
+            </div>
+
+            <h3 className="text-2xl font-bold font-heading text-white mb-4 uppercase tracking-tight group-hover:text-primary transition-colors">
+                {lab.title}
+            </h3>
+
+            <div className="relative mb-8 flex-grow">
+                <p className={`text-muted text-xs leading-relaxed font-mono opacity-70 transition-all duration-300 ${isExpanded ? '' : 'line-clamp-3'}`}>
+                    {lab.description}
+                </p>
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="text-primary text-[10px] uppercase tracking-widest font-bold mt-2 hover:underline focus:outline-none"
+                >
+                    {isExpanded ? '[ SHOW LESS ]' : '[ READ MORE ]'}
+                </button>
+            </div>
+
+            <div className="space-y-6 pt-6 border-t border-white/5 font-mono">
+                <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+                    <span className="text-muted">{lab.completed} COMPLETED</span>
+                    <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-primary animate-pulse"></span>
+                        <span className="text-primary">ONLINE</span>
+                    </div>
+                </div>
+                <button className="w-full py-4 bg-primary/10 border border-primary/20 text-primary font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-primary hover:text-background flex items-center justify-center gap-2">
+                    START LAB <span className="text-xs">→</span>
+                </button>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/10 group-hover:border-primary/30 transition-colors"></div>
+        </motion.div>
+    )
+}
+
 export function SecureLabs() {
+    const [showAll, setShowAll] = useState(false)
+    const displayedLabs = showAll ? labs : labs.slice(0, 3)
+
     return (
         <section id="labs" className="relative min-h-screen py-32 bg-background overflow-hidden border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto relative z-10">
@@ -72,52 +131,26 @@ export function SecureLabs() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {labs.map((lab, index) => (
-                        <motion.div
-                            key={lab.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05, duration: 0.5 }}
-                            viewport={{ once: true }}
-                            className="group relative bg-[#151D29] border border-white/5 p-8 transition-all duration-300 hover:border-primary/40 flex flex-col"
-                        >
-                            <div className="flex justify-between items-start mb-6 font-mono text-[10px] font-bold tracking-widest uppercase">
-                                <span className={`px-2 py-1 border ${lab.difficulty === 'EXPERT' ? 'text-red-500 border-red-500/20 bg-red-500/5' :
-                                    lab.difficulty === 'HARD' ? 'text-orange-500 border-orange-500/20 bg-orange-500/5' :
-                                        'text-yellow-500 border-yellow-500/20 bg-yellow-500/5'
-                                    }`}>
-                                    {lab.difficulty}
-                                </span>
-                                <span className="text-muted">{lab.duration}</span>
-                            </div>
-
-                            <h3 className="text-2xl font-bold font-heading text-white mb-4 uppercase tracking-tight group-hover:text-primary transition-colors">
-                                {lab.title}
-                            </h3>
-
-                            <p className="text-muted text-xs leading-relaxed font-mono opacity-70 mb-8 flex-grow line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
-                                {lab.description}
-                            </p>
-
-                            <div className="space-y-6 pt-6 border-t border-white/5 font-mono">
-                                <div className="flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
-                                    <span className="text-muted">{lab.completed} COMPLETED</span>
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 bg-primary animate-pulse"></span>
-                                        <span className="text-primary">ONLINE</span>
-                                    </div>
-                                </div>
-                                <button className="w-full py-4 bg-primary/10 border border-primary/20 text-primary font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-primary hover:text-background flex items-center justify-center gap-2">
-                                    START LAB <span className="text-xs">→</span>
-                                </button>
-                            </div>
-
-                            {/* Decorative elements */}
-                            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/10 group-hover:border-primary/30 transition-colors"></div>
-                        </motion.div>
+                    {displayedLabs.map((lab, index) => (
+                        <LabCard key={lab.id} lab={lab} index={index} />
                     ))}
                 </div>
+
+                {!showAll && labs.length > 3 && (
+                    <div className="mt-16 flex justify-center">
+                        <button
+                            onClick={() => setShowAll(true)}
+                            className="group relative px-12 py-6 bg-transparent border border-white/10 overflow-hidden transition-all hover:border-primary/50"
+                        >
+                            <span className="relative z-10 text-white font-mono font-bold uppercase tracking-[0.3em] text-xs transition-colors group-hover:text-primary">
+                                Load More Labs
+                            </span>
+                            <div className="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        </button>
+                    </div>
+                )}
             </div>
         </section>
     )
 }
+

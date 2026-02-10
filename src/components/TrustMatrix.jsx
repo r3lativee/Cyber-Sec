@@ -34,35 +34,65 @@ const chooseLabs = [
     }
 ]
 
+const FADE_UP_ANIMATION_VARIANTS = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            damping: 25,
+            stiffness: 100,
+            duration: 0.8
+        }
+    },
+}
+
 export function TrustMatrix() {
     return (
         <section id="solutions" className="relative py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={{
+                        show: {
+                            transition: {
+                                staggerChildren: 0.15
+                            }
+                        }
+                    }}
+                    className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
+                >
                     <div>
-                        <div className="flex items-center gap-3 mb-4">
+                        <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                             <span className="w-8 h-[1px] bg-primary"></span>
                             <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
                                 // ELITE TRAINING MODULES
                             </span>
-                        </div>
-                        <h2 className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
+                        </motion.div>
+                        <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
                             WHY JOIN <br /> <span className="text-primary italic">CYBER-SEC ACADEMY?</span>
-                        </h2>
+                        </motion.h2>
                     </div>
-                    <p className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed font-mono opacity-80 border-l border-white/10 pl-6">
+                    <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed font-mono opacity-80 border-l border-white/10 pl-6">
                         <span className="text-primary">{'>'}</span> Experience the most comprehensive cybersecurity training platform with real-world scenarios designed to challenge your skills.
-                    </p>
-                </div>
+                    </motion.p>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {chooseLabs.map((lab, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                            viewport={{ once: true }}
+                            transition={{
+                                duration: 1,
+                                delay: index * 0.1,
+                                ease: [0.23, 1, 0.32, 1]
+                            }}
+                            viewport={{ once: true, margin: "-50px" }}
                             className="group p-8 bg-[#151D29] border border-white/5 transition-all duration-300 hover:border-primary/50"
                         >
                             <div className="flex justify-between items-start mb-8">
@@ -90,3 +120,4 @@ export function TrustMatrix() {
         </section>
     )
 }
+

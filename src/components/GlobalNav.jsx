@@ -25,12 +25,16 @@ export default function GlobalNav() {
     return (
         <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'py-4 bg-[#0D1117]/95 backdrop-blur-md border-b border-primary/10' : 'py-8 bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                <a href="#" className="group">
+                <a href="#" className="group flex items-center gap-4">
                     <img
                         src="/assets/images/Full-word_11zon.png"
                         alt="Cyber-Sec Academy"
                         className="h-12 md:h-16 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                     />
+                    <div className="h-8 w-[1px] bg-white/10 hidden md:block" />
+                    <span className="text-[12px] md:text-[14px] font-mono font-bold tracking-[0.4em] text-white/70 group-hover:text-white transition-all uppercase">
+                        Labs
+                    </span>
                 </a>
 
                 {/* Desktop Links */}
