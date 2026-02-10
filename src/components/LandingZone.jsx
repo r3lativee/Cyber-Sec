@@ -49,7 +49,7 @@ export function LandingZone() {
                         <span className="text-primary font-mono text-sm tracking-[0.3em] font-bold">EST. 2026 // CYBER DEFENSE</span>
                     </div>
 
-                    <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-bold font-heading leading-[0.85] tracking-tighter stagger-text uppercase">
+                    <h1 className="text-7xl md:text-9xl lg:text-[10rem] font-bold font-heading leading-[0.85] tracking-tighter stagger-text uppercase">
                         MASTER <br />
                         <span className="text-primary italic">CYBERSECURITY</span> <br />
                         SKILLS
