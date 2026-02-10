@@ -45,27 +45,27 @@ export function LandingZone() {
             <div className="max-w-7xl w-full mx-auto relative z-30 flex flex-col items-start text-left">
                 <div className="space-y-4 mb-12">
                     <div className="flex items-center gap-3 stagger-text mb-4">
-                        <span className="w-12 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-sm tracking-[0.3em] font-bold">EST. 2026 // CYBER DEFENSE</span>
+                        <span className="w-8 md:w-12 h-[1px] bg-primary"></span>
+                        <span className="text-primary font-mono text-[10px] md:text-sm tracking-[0.3em] font-bold uppercase">EST. 2026 // CYBER DEFENSE</span>
                     </div>
 
-                    <h1 className="text-7xl md:text-9xl lg:text-[10rem] font-bold font-heading leading-[0.85] tracking-tighter stagger-text uppercase">
+                    <h1 className="text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] font-bold font-heading leading-[0.9] md:leading-[0.85] tracking-tighter stagger-text uppercase">
                         MASTER <br />
                         <span className="text-primary ">CYBERSECURITY</span> <br />
                         SKILLS
                     </h1>
 
-                    <p className="stagger-text text-muted text-base md:text-lg font-mono leading-relaxed max-w-2xl py-2 mt-8 opacity-80">
+                    <p className="stagger-text text-muted text-sm md:text-lg font-mono leading-relaxed max-w-2xl py-2 mt-4 md:mt-8 opacity-80">
                         <span className="text-primary font-bold">{'>'}</span> Practice on real-world scenarios in our immersive security labs. From web application testing to advanced penetration testing, enhance your skills with hands-on experience.
                     </p>
                 </div>
 
-                <div className="flex flex-wrap justify-end gap-4 stagger-text mt-16 w-full font-mono">
-                    <button className="group relative px-10 py-5 bg-primary text-background font-bold uppercase tracking-wider text-sm overflow-hidden transition-all duration-300">
+                <div className="flex flex-wrap justify-start gap-4 stagger-text mt-8 md:mt-16 w-full font-mono">
+                    <button className="group relative px-6 md:px-10 py-4 md:py-5 bg-primary text-background font-bold uppercase tracking-wider text-[11px] md:text-sm overflow-hidden transition-all duration-300">
                         <span className="relative z-10">Start Hacking Now</span>
                         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
                     </button>
-                    <button className="group relative px-10 py-5 border border-primary/30 text-primary font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:border-primary">
+                    <button className="group relative px-6 md:px-10 py-4 md:py-5 border border-primary/30 text-primary font-bold uppercase tracking-wider text-[11px] md:text-sm transition-all duration-300 hover:border-primary">
                         <span className="relative z-10">View Laboratories</span>
                         <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity"></div>
                     </button>
