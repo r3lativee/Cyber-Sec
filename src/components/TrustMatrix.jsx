@@ -73,7 +73,7 @@ export function TrustMatrix() {
                             </span>
                         </motion.div>
                         <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
-                            WHY JOIN <br /> <span className="text-primary italic">CYBER-SEC ACADEMY?</span>
+                            WHY JOIN <br /> <span className="text-primary ">CYBER-SEC ACADEMY?</span>
                         </motion.h2>
                     </div>
                     <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed font-mono opacity-80 border-l border-white/10 pl-6">

@@ -67,7 +67,7 @@ export function Backbone() {
                         </span>
                     </motion.div>
                     <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-8xl font-bold font-heading tracking-tighter uppercase leading-none">
-                        PLATFORM <br /> <span className="text-primary italic">INFRASTRUCTURE</span>
+                        PLATFORM <br /> <span className="text-primary ">INFRASTRUCTURE</span>
                     </motion.h2>
                 </motion.div>
 
