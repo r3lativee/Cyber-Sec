@@ -1,56 +1,61 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-const photos = [
-    { id: 1, url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070', title: 'Geometric Silence', span: 'col-span-2 row-span-2' },
-    { id: 2, url: 'https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80&w=2070', title: 'Chromodynamics', span: 'col-span-1 row-span-1' },
-    { id: 3, url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1638', title: 'Abstract Forms', span: 'col-span-1 row-span-2' },
-    { id: 4, url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070', title: 'Urban Rhythms', span: 'col-span-1 row-span-1' },
+const learningPaths = [
+    {
+        title: 'Web Application Security',
+        description: 'Master web application security from basics to advanced exploitation techniques. Perfect for beginners and intermediate learners.',
+        stats: '15 Labs • 40-60 hours',
+        level: 'Beginner to Advanced'
+    },
+    {
+        title: 'Penetration Testing',
+        description: 'Complete penetration testing methodology from reconnaissance to reporting. Industry-standard techniques and tools.',
+        stats: '20 Labs • 60-80 hours',
+        level: 'Intermediate to Expert'
+    }
 ]
 
 export function Photography() {
     return (
-        <section id="photography" className="relative min-h-screen py-32 px-6 bg-background">
+        <section id="resources" className="relative py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-                    <div>
-                        <span className="text-accent-secondary font-heading text-sm uppercase tracking-[0.3em] mb-4 block">
-                            03 // Visual Arts
-                        </span>
-                        <h2 className="text-5xl md:text-8xl font-bold font-heading">
-                            PHOTOGRAPHY
-                        </h2>
-                    </div>
-                    <p className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed">
-                        Capturing the intersection of light, shadow, and geometry.
-                        A study in composition and visual storytelling focused on cinematic depth.
-                    </p>
+                <div className="mb-20">
+                    <span className="text-primary font-heading text-xs uppercase tracking-[0.4em] mb-4 block font-bold">
+                        // STRUCTURED LEARNING
+                    </span>
+                    <h2 className="text-4xl md:text-7xl font-black font-heading tracking-tighter uppercase leading-none">
+                        Follow Our <br /> <span className="text-gradient">Learning Paths</span>
+                    </h2>
+                    <p className="text-muted text-sm mt-6 uppercase tracking-[0.2em] font-bold">Structured pathways designed for mastery</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px]">
-                    {photos.map((photo, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {learningPaths.map((path, i) => (
                         <motion.div
-                            key={photo.id}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            viewport={{ once: true }}
-                            className={`group relative overflow-hidden rounded-3xl cursor-pointer ${photo.span}`}
+                            key={i}
+                            initial={{ opacity: 0, x: i === 0 ? -30 : 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="group p-10 rounded-3xl glass border border-white/[0.03] hover:border-primary/40 transition-all duration-500 overflow-hidden relative"
                         >
-                            <img
-                                src={photo.url}
-                                alt={photo.title}
-                                className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0"
-                            />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-8 backdrop-blur-[2px]">
-                                <span className="text-accent-neon font-heading text-[10px] tracking-[0.4em] uppercase mb-2 block transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                    Composition Series
-                                </span>
-                                <h3 className="text-2xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">{photo.title}</h3>
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl opacity-0 group-hover:opacity-100 transition-all"></div>
+
+                            <div className="flex justify-between items-start mb-10">
+                                <div className="px-4 py-2 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
+                                    {path.level}
+                                </div>
+                                <span className="text-muted text-[10px] font-bold uppercase tracking-widest">{path.stats}</span>
                             </div>
 
-                            {/* Grain/Noise Overlay on Hover */}
-                            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+                            <h3 className="text-3xl font-bold font-heading mb-6 text-white group-hover:text-primary transition-colors uppercase tracking-tight">{path.title}</h3>
+                            <p className="text-muted font-light leading-relaxed mb-10">
+                                {path.description}
+                            </p>
+
+                            <button className="flex items-center gap-3 text-xs font-bold text-white uppercase tracking-widest group-hover:gap-5 transition-all">
+                                Start Learning Path <span className="text-primary">→</span>
+                            </button>
                         </motion.div>
                     ))}
                 </div>

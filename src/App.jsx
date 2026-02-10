@@ -52,26 +52,6 @@ function App() {
 
   return (
     <div className="relative w-full min-h-screen bg-background">
-      {/* Background Three.js Scene */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        {hasWebGL ? (
-          <Canvas
-            camera={{ position: [0, 0, 15], fov: 75 }}
-            gl={{ antialias: true, alpha: true }}
-            dpr={[1, 2]}
-            eventSource={typeof document !== 'undefined' ? document.body : null}
-            eventPrefix="client"
-          >
-            <Suspense fallback={null}>
-              <Scene />
-            </Suspense>
-          </Canvas>
-        ) : (
-          <div className="absolute inset-0 bg-[#0A0A0A] bg-gradient-to-br from-[#0A0A0A] via-[#111] to-[#0A0A0A]"></div>
-        )}
-      </div>
-
-      {/* Content */}
       <CustomCursor />
       <Navbar />
 

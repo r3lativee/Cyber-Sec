@@ -1,89 +1,80 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-const timeline = [
+const chooseLabs = [
     {
-        year: '2024 - Present',
-        role: 'Design Lead & Creative Technologist',
-        company: 'Google Developer Groups (GDG) Guwahati',
-        description:
-            'Leading UI/UX and visual design initiatives for developer events and community programs. Delivering high-impact digital assets, mentoring designers, and driving cohesive design systems across cross-functional teams.'
+        title: 'Web Security Labs',
+        description: 'Master OWASP Top 10 vulnerabilities, SQL injection, XSS, and advanced web application security testing techniques.',
+        meta: '50+ Scenarios'
     },
     {
-        year: '2024 - 2026',
-        role: 'IT Coordinator & ERP Administrator',
-        company: 'St. Clares Convent Senior Secondary School',
-        description:
-            'Managing ERP systems, CBSE portal operations, user databases, and digital workflows for a large-scale academic institution. Also handling digital marketing, content publishing, and technical operations across platforms.'
+        title: 'Network Penetration',
+        description: 'Practice network enumeration, exploitation, and post-exploitation techniques in realistic enterprise environments.',
+        meta: '30+ Networks'
     },
     {
-        year: '2024',
-        role: 'Front-End Developer',
-        company: 'Sous Itineraries International Pvt. Ltd.',
-        description:
-            'Designed and developed responsive React-based web applications for travel platforms. Improved performance, implemented payment integrations, and collaborated closely with product and backend teams.'
+        title: 'Mobile Security',
+        description: 'Learn iOS and Android security testing, reverse engineering, and mobile application vulnerability assessment.',
+        meta: '25+ Apps'
     },
     {
-        year: '2023 - Present',
-        role: '3D Artist & Visual Storyteller',
-        company: 'Freelance',
-        description:
-            'Creating cinematic product visualizations, 3D animations, and branded visual content for clients. Focused on high-fidelity rendering, motion design, and storytelling across digital platforms.'
+        title: 'Malware Analysis',
+        description: 'Analyze malware samples, understand attack vectors, and develop detection and mitigation strategies.',
+        meta: '20+ Samples'
     },
     {
-        year: '2023',
-        role: '3D NFT Designer',
-        company: 'International Client (California)',
-        description:
-            'Designed and delivered 3D NFT assets and immersive scenes for a commercial NFT collection, contributing to a successful digital launch.'
+        title: 'Social Engineering',
+        description: 'Practice phishing, pretexting, and other social engineering techniques in controlled environments.',
+        meta: '15+ Scenarios'
     },
     {
-        year: '2022 - 2024',
-        role: 'Design Lead & Mentor',
-        company: 'Google Developer Students Club (GDSC)',
-        description:
-            'Led multiple UI/UX projects, mentored students through workshops, hackathons, and real-world projects, and played a key role in building a strong design-driven developer community.'
+        title: 'Cloud Security',
+        description: 'Master AWS, Azure, and GCP security configurations, IAM policies, and cloud infrastructure testing.',
+        meta: '40+ Configs'
     }
 ]
 
-
 export function Experience() {
     return (
-        <section id="experience" className="relative min-h-screen py-32 px-6 bg-background">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-20">
-                    <span className="text-accent-secondary font-heading text-sm uppercase tracking-[0.3em] mb-4 block">
-                        05 // Timeline
-                    </span>
-                    <h2 className="text-5xl md:text-8xl font-black font-heading tracking-tighter">
-                        JOURNEY
-                    </h2>
-                    <p className="text-muted mt-4 max-w-sm">A professional evolution from artistic rendering to complex system architecture.</p>
+        <section id="solutions" className="relative py-32 bg-background border-t border-white/5 px-6">
+            <div className="max-w-7xl mx-auto">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                    <div>
+                        <span className="text-secondary font-heading text-xs uppercase tracking-[0.5em] mb-4 block font-bold">
+                            // ADVANCED LEARNING PLATFORM
+                        </span>
+                        <h2 className="text-4xl md:text-7xl font-black font-heading tracking-tighter uppercase leading-none">
+                            Why Choose <br /> <span className="text-gradient">BugThrive Labs?</span>
+                        </h2>
+                    </div>
+                    <p className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed font-light border-l border-primary/20 pl-6">
+                        Experience the most comprehensive cybersecurity training platform with real-world scenarios designed to challenge your skills.
+                    </p>
                 </div>
 
-                <div className="relative border-l border-white/10 ml-4 md:ml-0 md:pl-0">
-                    {timeline.map((item, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {chooseLabs.map((lab, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.2, duration: 0.8 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className="relative pl-12 pb-20 group"
+                            className="group p-8 rounded-2xl glass border border-white/[0.03] hover:border-primary/30 transition-all duration-500 flex flex-col justify-between"
                         >
-                            {/* Dot */}
-                            <div className="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-accent-secondary border-4 border-background group-hover:scale-150 transition-transform duration-300"></div>
-
-                            <span className="text-accent-secondary font-heading text-sm mb-2 block font-bold tracking-widest">
-                                {item.year}
-                            </span>
-                            <h3 className="text-2xl md:text-3xl font-black mb-1 font-heading uppercase tracking-tight">{item.role}</h3>
-                            <p className="text-accent-neon text-xs md:text-sm mb-4 font-heading tracking-[0.2em] uppercase">
-                                {item.company}
-                            </p>
-                            <p className="text-muted leading-relaxed max-w-2xl">
-                                {item.description}
-                            </p>
+                            <div>
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-background transition-all duration-500">
+                                        <div className="w-5 h-5 bg-current rounded-sm"></div>
+                                    </div>
+                                    <span className="text-[10px] font-bold text-primary px-3 py-1 bg-primary/5 rounded-full border border-primary/10 uppercase tracking-widest">{lab.meta}</span>
+                                </div>
+                                <h3 className="text-2xl font-bold font-heading mb-4 text-white uppercase tracking-tight group-hover:text-primary transition-colors">{lab.title}</h3>
+                                <p className="text-muted font-light leading-relaxed text-sm mb-8">
+                                    {lab.description}
+                                </p>
+                            </div>
+                            <div className="w-full h-[1px] bg-white/5 group-hover:bg-primary/20 transition-colors"></div>
                         </motion.div>
                     ))}
                 </div>

@@ -53,13 +53,13 @@ const vertexShader = `
     // Reduced power and more "flat" spread feel
     vec3 finalPos = basePos + (dir * push * 3.5);
 
-    // Fade edges
-    vOpacity = (smoothstep(45.0, 15.0, length(finalPos)) * 0.3 + 0.1) * (aIsShape > 0.5 ? 1.0 : 0.5);
+    // Fade edges (High visibility for a brighter center)
+    vOpacity = (smoothstep(55.0, 5.0, length(finalPos)) * 0.8 + 0.3) * (aIsShape > 0.5 ? 1.0 : 0.6);
 
     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
     
-    // Micro-particles
-    gl_PointSize = aSize * uPixelRatio * (90.0 / -mvPosition.z);
+    // Increased particle size
+    gl_PointSize = aSize * uPixelRatio * (150.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
   }
 `
@@ -69,9 +69,11 @@ const fragmentShader = `
   
   void main() {
     float r = distance(gl_PointCoord, vec2(0.5));
-    if (r > 0.48) discard;
+    if (r > 0.45) discard; // Sharper edges
     
-    gl_FragColor = vec4(1.0, 1.0, 1.0, vOpacity);
+    // Brighter Hacker Green with a touch of white for luminance
+    vec3 color = vec3(0.1, 1.0, 0.7); 
+    gl_FragColor = vec4(color, vOpacity);
   }
 `
 
@@ -80,8 +82,8 @@ export function Scene() {
     const { size } = useThree()
     const [iconIndex, setIconIndex] = useState(0)
 
-    const count = 10000
-    const shapeCount = 8000
+    const count = 30000 // Increased density for more "glow"
+    const shapeCount = 10000 // More particles in the shapes
     const pixelRatio = size.width > 0 ? Math.min(window.devicePixelRatio, 2) : 1
 
     const [positions, sources, targets, sizes, randoms, isShape] = useMemo(() => {
@@ -93,22 +95,22 @@ export function Scene() {
         const ish = new Float32Array(count)
 
         for (let i = 0; i < count; i++) {
-            const x = (Math.random() - 0.5) * 65
-            const y = (Math.random() - 0.5) * 50
-            const z = (Math.random() - 0.5) * 15
+            const x = (Math.random() - 0.5) * 60
+            const y = (Math.random() - 0.5) * 45
+            const z = (Math.random() - 0.5) * 12
 
             pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z
             src[i * 3] = x; src[i * 3 + 1] = y; src[i * 3 + 2] = z
             tar[i * 3] = x; tar[i * 3 + 1] = y; tar[i * 3 + 2] = z
 
-            sz[i] = 0.15 + Math.random() * 0.3
+            sz[i] = 0.1 + Math.random() * 0.2 // Smaller, sharper nodes
             rd[i] = Math.random()
             ish[i] = i < shapeCount ? 1.0 : 0.0
         }
         return [pos, src, tar, sz, rd, ish]
     }, [])
 
-    // High-End Wireframe Shape Generators
+    // Cyber Research Shape Generators
     const getShape = (index, i, vec) => {
         if (i >= shapeCount) {
             vec.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
@@ -116,32 +118,27 @@ export function Scene() {
         }
 
         if (index === 0) {
-            // 1. Torus Knot (Wireframe nodes)
-            const t = (i / shapeCount) * Math.PI * 2 * 10
-            const p = 2, q = 3, r = 6
-            const x = r * (2 + Math.cos(q * t)) * Math.cos(p * t)
-            const y = r * (2 + Math.cos(q * t)) * Math.sin(p * t)
-            const z = r * Math.sin(q * t)
-            vec.set(x * 0.5, y * 0.5, z * 0.5)
-        } else if (index === 1) {
-            // 2. Nested Platonic Rings
-            const ring = i % 4
-            const theta = Math.random() * Math.PI * 2
-            const r = 8 + ring * 2
-            if (ring === 0) vec.set(Math.cos(theta) * r, Math.sin(theta) * r, 0)
-            else if (ring === 1) vec.set(Math.cos(theta) * r, 0, Math.sin(theta) * r)
-            else if (ring === 2) vec.set(0, Math.cos(theta) * r, Math.sin(theta) * r)
-            else vec.set(Math.cos(theta) * r * 0.7, Math.sin(theta) * r * 0.7, Math.cos(theta) * r * 0.7)
-        } else if (index === 2) {
-            // 3. Technical Grid Sphere (Icosahedron-ish)
+            // 1. Digital Core (Dodecahedron-like nodes)
             const phi = Math.acos(-1 + (2 * i) / shapeCount)
             const theta = Math.sqrt(shapeCount * Math.PI) * phi
-            const r = 10
+            const r = 9
             vec.set(
                 r * Math.cos(theta) * Math.sin(phi),
                 r * Math.sin(theta) * Math.sin(phi),
                 r * Math.cos(phi)
             )
+        } else if (index === 1) {
+            // 2. Data Streams (Vertical tubes/lines)
+            const column = i % 8
+            const r = 2 + Math.random() * 0.5
+            const theta = (column / 8) * Math.PI * 2
+            const y = ((i / shapeCount) - 0.5) * 25
+            vec.set(Math.cos(theta) * r, y, Math.sin(theta) * r)
+        } else if (index === 2) {
+            // 3. Network Mesh (Flat technical plane)
+            const row = Math.floor(i / 70)
+            const col = i % 70
+            vec.set((col - 35) * 0.4, (row - 35) * 0.4, 0)
         }
     }
 
@@ -157,15 +154,15 @@ export function Scene() {
         uniforms.uTime.value = clock.getElapsedTime()
 
         if (uniforms.uTransition.value < 1) {
-            uniforms.uTransition.value += 0.003
+            uniforms.uTransition.value += 0.005 // Faster transition
         }
 
-        uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.08)
-        uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, mouse.y, 0.08)
+        uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.05)
+        uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, mouse.y, 0.05)
 
         if (meshRef.current) {
-            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.15, 0.05)
-            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.15, 0.05)
+            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.1, 0.03)
+            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.1, 0.03)
         }
     })
 
@@ -190,7 +187,7 @@ export function Scene() {
 
             uniforms.uTransition.value = 0
             setIconIndex(next)
-        }, 12000)
+        }, 8000) // 8 second interval
         return () => clearInterval(interval)
     }, [iconIndex])
 

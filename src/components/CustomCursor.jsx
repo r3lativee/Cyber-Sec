@@ -18,17 +18,17 @@ export default function CustomCursor() {
     return (
         <div className="hidden lg:block">
             <motion.div
-                className="fixed top-0 left-0 w-8 h-8 rounded-full border border-accent-neon pointer-events-none z-[1000] mix-blend-difference"
+                className="fixed top-0 left-0 w-8 h-8 rounded-full border border-primary pointer-events-none z-[1000] mix-blend-difference"
                 animate={{
                     x: mousePos.x - 16,
                     y: mousePos.y - 16,
                     scale: isPointer ? 1.5 : 1,
-                    backgroundColor: isPointer ? 'rgba(79, 209, 255, 0.2)' : 'rgba(79, 209, 255, 0)',
+                    backgroundColor: isPointer ? 'rgba(0, 229, 255, 0.2)' : 'rgba(0, 229, 255, 0)',
                 }}
                 transition={{ type: 'spring', damping: 20, stiffness: 200, mass: 0.5 }}
             />
             <motion.div
-                className="fixed top-0 left-0 w-1 h-1 bg-accent-neon rounded-full pointer-events-none z-[1000]"
+                className="fixed top-0 left-0 w-1 h-1 bg-primary rounded-full pointer-events-none z-[1000]"
                 animate={{
                     x: mousePos.x - 2,
                     y: mousePos.y - 2,

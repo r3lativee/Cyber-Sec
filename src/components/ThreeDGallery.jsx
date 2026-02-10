@@ -1,208 +1,87 @@
-import React, { Suspense, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, MeshDistortMaterial, PresentationControls, Float, MeshTransmissionMaterial, Environment, ContactShadows } from '@react-three/drei'
+import React from 'react'
 import { motion } from 'framer-motion'
-import * as THREE from 'three'
 
-const productRenders = [
-    { id: 1, url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999', title: 'Minimalist Watch' },
-    { id: 2, url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070', title: 'Acoustic Soul' },
-    { id: 3, url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070', title: 'Speedform' },
-    { id: 4, url: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=2070', title: 'Optic Clarity' },
+const labProtocols = [
+    { id: 1, url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2000', title: 'Network Scanners' },
+    { id: 2, url: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2000', title: 'Exploit DB' },
+    { id: 3, url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070', title: 'Traffic Analysis' },
+    { id: 4, url: 'https://images.unsplash.com/photo-1510511459019-5dee995d3042?q=80&w=2070', title: 'Security Audits' },
 ]
-
-function BackgroundShapes() {
-    const mesh1 = useRef()
-    const mesh2 = useRef()
-    const mesh3 = useRef()
-    const mesh4 = useRef()
-
-    useFrame((state) => {
-        const t = state.clock.getElapsedTime()
-        if (mesh1.current) {
-            mesh1.current.rotation.x = t * 0.1
-            mesh1.current.rotation.y = t * 0.15
-            mesh1.current.position.y = 2 + Math.sin(t * 0.5) * 0.5
-        }
-        if (mesh2.current) {
-            mesh2.current.rotation.x = t * 0.12
-            mesh2.current.rotation.z = t * 0.1
-            mesh2.current.position.y = -2 + Math.cos(t * 0.5) * 0.5
-        }
-        if (mesh3.current) {
-            mesh3.current.rotation.y = t * 0.2
-            mesh3.current.position.x = -6 + Math.sin(t * 0.3) * 0.5
-        }
-        if (mesh4.current) {
-            mesh4.current.rotation.z = t * 0.15
-            mesh4.current.position.x = 6 + Math.cos(t * 0.4) * 0.5
-        }
-    })
-
-    return (
-        <group>
-            {/* Transparent Glass Shapes */}
-            <mesh ref={mesh1} position={[-5, 2, -5]}>
-                <torusKnotGeometry args={[1, 0.3, 128, 32]} />
-                <MeshTransmissionMaterial
-                    thickness={0.5}
-                    roughness={0.1}
-                    transmission={1}
-                    ior={1.2}
-                    color="#4FD1FF"
-                />
-            </mesh>
-            <mesh ref={mesh3} position={[-7, -3, -8]}>
-                <octahedronGeometry args={[1.5, 0]} />
-                <MeshTransmissionMaterial
-                    thickness={1}
-                    roughness={0}
-                    transmission={1}
-                    ior={1.5}
-                    color="#ffffff"
-                />
-            </mesh>
-
-            {/* Metal Shapes */}
-            <mesh ref={mesh2} position={[5, -2, -5]}>
-                <icosahedronGeometry args={[2, 0]} />
-                <meshStandardMaterial
-                    color="#ffffff"
-                    metalness={1}
-                    roughness={0.1}
-                />
-            </mesh>
-            <mesh ref={mesh4} position={[7, 3, -6]}>
-                <tetrahedronGeometry args={[2, 0]} />
-                <meshStandardMaterial
-                    color="#ffffff"
-                    metalness={1}
-                    roughness={0.05}
-                />
-            </mesh>
-        </group>
-    )
-}
-
-function MainModel() {
-    return (
-        <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-            <mesh scale={1.2}>
-                <torusGeometry args={[1, 0.4, 64, 128]} />
-                <MeshTransmissionMaterial
-                    backside
-                    samples={16}
-                    thickness={0.5}
-                    chromaticAberration={0.05}
-                    anisotropy={0.3}
-                    distortion={0.3}
-                    distortionScale={0.3}
-                    temporalDistortion={0.1}
-                    color="#4FD1FF"
-                />
-            </mesh>
-        </Float>
-    )
-}
 
 export function ThreeDGallery() {
     return (
-        <section id="work" className="relative min-h-screen py-32 bg-[#050505] overflow-hidden">
-            {/* Full-section Background Canvas */}
-            <div className="absolute inset-0 z-0 opacity-60">
-                <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 15], fov: 45 }}>
-                    <Suspense fallback={null}>
-                        <BackgroundShapes />
-                        <Environment preset="studio" />
-                        <ambientLight intensity={0.5} />
-                        <pointLight position={[10, 10, 10]} intensity={2} color="#4FD1FF" />
-                        <pointLight position={[-10, -10, -10]} intensity={1.5} color="#7C7CFF" />
-                    </Suspense>
-                </Canvas>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[70vh]">
+        <section id="labs" className="relative min-h-screen py-32 bg-background overflow-hidden border-t border-white/5 px-6">
+            <div className="max-w-7xl mx-auto relative z-10">
+                <div className="flex flex-col items-start min-h-[50vh] mb-20">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1, ease: "easeOut" }}
                         viewport={{ once: true }}
+                        className="max-w-3xl"
                     >
-                        <span className="text-accent-neon font-heading text-sm uppercase tracking-[0.3em] mb-6 block font-bold">
-                            02 // 3D Product Design
+                        <span className="text-secondary font-heading text-xs uppercase tracking-[0.4em] mb-6 block font-bold">
+                            // FEATURED LABS
                         </span>
-                        <h2 className="text-6xl md:text-9xl font-black font-heading mb-8 tracking-tighter leading-[0.85]">
-                            BEYOND <br /> THE <span className="text-gradient">SCREEN</span>
+                        <h2 className="text-5xl md:text-8xl font-black font-heading mb-8 tracking-tighter leading-[0.85] uppercase">
+                            Secure <br /> <span className="text-gradient">Training</span> <br /> Environments
                         </h2>
-                        <p className="text-muted text-lg md:text-xl max-w-md mb-12 leading-relaxed">
-                            Transforming concepts into high-fidelity three-dimensional realities.
-                            Specializing in procedural materials, complex lighting, and interactive WebGL experiences.
-                        </p>
-                        <div className="flex gap-4">
-                            <button className="group relative px-10 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:pr-14">
-                                <span className="relative z-10 font-heading text-xs uppercase tracking-widest">View All Renders</span>
-                                <div className="absolute inset-y-0 right-[-20px] group-hover:right-4 transition-all duration-300 flex items-center font-bold">
-                                    →
-                                </div>
-                            </button>
+                        <div className="p-8 md:p-12 rounded-2xl glass border border-primary/20 bg-primary/5 mb-12 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px]"></div>
+                            <div className="flex items-center gap-4 mb-6">
+                                <span className="px-3 py-1 rounded bg-yellow-500/20 text-yellow-500 text-[10px] font-bold uppercase tracking-widest">Medium</span>
+                                <span className="text-muted text-[10px] font-bold uppercase tracking-widest">30 min</span>
+                                <span className="text-primary text-[10px] font-bold uppercase tracking-widest ml-auto">1 completed</span>
+                            </div>
+                            <h3 className="text-3xl font-bold font-heading text-white mb-6 uppercase tracking-tight group-hover:text-primary transition-colors">EchoDesk</h3>
+                            <p className="text-muted text-base leading-relaxed font-light mb-10 max-w-2xl">
+                                EchoDesk is our new shiny internal assistant for all HR and IT queries. It helps employees track their support tickets and access company policies. Use the portal to get familiar with our internal systems. We believe in radical transparency but surely some things should remain private? Can you dig through the noise and find what the HR Manager is trying to hide?
+                            </p>
+                            <div className="flex flex-wrap gap-4">
+                                <button className="px-8 py-4 bg-primary text-background font-heading font-bold uppercase tracking-widest text-[10px] rounded hover:shadow-[0_0_25px_rgba(0,255,156,0.4)] transition-all">
+                                    Start Lab
+                                </button>
+                                <button className="px-8 py-4 border border-white/10 glass text-white font-heading font-bold uppercase tracking-widest text-[10px] rounded hover:bg-white/5 transition-all">
+                                    View All Labs
+                                </button>
+                            </div>
                         </div>
                     </motion.div>
-
-                    <div className="h-[500px] w-full relative">
-                        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 45 }}>
-                            <Suspense fallback={null}>
-                                <Environment preset="studio" />
-                                <PresentationControls
-                                    global={false}
-                                    config={{ mass: 2, tension: 500 }}
-                                    snap={{ mass: 4, tension: 1500 }}
-                                    rotation={[0, 0.3, 0]}
-                                    polar={[-Math.PI / 3, Math.PI / 3]}
-                                    azimuth={[-Math.PI / 1.4, Math.PI / 1.4]}
-                                >
-                                    <MainModel />
-                                </PresentationControls>
-                                <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
-                                <ambientLight intensity={1} />
-                                <spotLight position={[10, 20, 10]} angle={0.15} penumbra={1} intensity={3} castShadow />
-                                <spotLight position={[-10, 20, -10]} angle={0.15} penumbra={1} intensity={2} color="#7C7CFF" />
-                                <pointLight position={[0, 0, 5]} intensity={1} />
-                            </Suspense>
-                        </Canvas>
-                    </div>
                 </div>
 
-                {/* Render Gallery */}
-                <div className="mt-40">
+                {/* Lab Series Gallery */}
+                <div className="mt-20">
                     <div className="flex justify-between items-end mb-16">
                         <div>
-                            <h3 className="text-3xl font-bold font-heading uppercase tracking-tighter">Rendered Prototypes</h3>
-                            <p className="text-muted text-sm mt-3 uppercase tracking-widest">Static high-fidelity visualizations</p>
+                            <h3 className="text-3xl font-bold font-heading uppercase tracking-tighter text-white">Advanced Lab Scenarios</h3>
+                            <p className="text-muted text-xs mt-3 uppercase tracking-widest flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Choose from 150+ real-world simulations
+                            </p>
                         </div>
-                        <div className="h-[1px] flex-1 bg-white/10 mx-10 mb-3 hidden md:block"></div>
+                        <div className="h-[1px] flex-1 bg-white/5 mx-10 mb-3 hidden md:block"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {productRenders.map((render, index) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {labProtocols.map((protocol, index) => (
                             <motion.div
-                                key={render.id}
-                                initial={{ opacity: 0, y: 50 }}
+                                key={protocol.id}
+                                initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1, duration: 0.8, ease: "easeOut" }}
                                 viewport={{ once: true }}
-                                className="group relative aspect-square overflow-hidden rounded-[2rem] glass-dark border border-white/5"
+                                className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/5 glass hover:border-primary/40 transition-all duration-500"
                             >
                                 <img
-                                    src={render.url}
-                                    alt={render.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    src={protocol.url}
+                                    alt={protocol.title}
+                                    className="w-full h-full object-cover grayscale opacity-30 transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-60"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                    <h4 className="text-2xl font-heading font-black uppercase tracking-tight leading-none mb-2">{render.title}</h4>
-                                    <span className="text-accent-neon text-[10px] uppercase tracking-[0.3em] font-bold">Studio Render // 2026</span>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent flex flex-col justify-end p-8">
+                                    <div className="w-10 h-[1px] bg-primary mb-4"></div>
+                                    <h4 className="text-2xl font-heading font-bold uppercase tracking-tight leading-none mb-2 text-white">{protocol.title}</h4>
+                                    <span className="text-primary text-[9px] uppercase tracking-[0.3em] font-medium font-bold">Lab Scenario // 2026</span>
                                 </div>
-                                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] transition-opacity duration-500"></div>
+                                <div className="absolute inset-x-0 bottom-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
                             </motion.div>
                         ))}
                     </div>

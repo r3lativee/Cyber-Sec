@@ -4,8 +4,8 @@
   --color-background: #0B0F14;
   --color-foreground: #E6EDF3;
   --color-muted: #9BA4AE;
-  --color-primary: #00E5FF;
-  --color-secondary: #6C63FF;
+  --color-primary: #00FF9C;
+  --color-secondary: #00E5FF;
   --color-accent: #00FF9C;
   --color-border-subtle: rgba(255, 255, 255, 0.08);
 
@@ -55,6 +55,22 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+}
+
+@layer utilities {
+  @keyframes scan {
+    from {
+      transform: translateY(-100%);
+    }
+
+    to {
+      transform: translateY(200%);
+    }
+  }
+
+  .animate-scan {
+    animation: scan 3s linear infinite;
   }
 }
 
