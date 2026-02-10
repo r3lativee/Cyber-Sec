@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Send, Github, Linkedin, Twitter, Download } from 'lucide-react'
 import { Canvas } from '@react-three/fiber'
-import { Scene } from './three/Scene'
+import { BackgroundFX } from './three/BackgroundFX'
 import { Suspense } from 'react'
 
 const footerLinks = {
@@ -11,7 +11,7 @@ const footerLinks = {
     Company: ['About', 'Contact', 'Careers', 'Privacy']
 }
 
-export function Contact() {
+export function Communications() {
     return (
         <section id="contact" className="relative bg-background overflow-hidden flex flex-col pt-32">
             <div className="max-w-7xl mx-auto px-6 w-full text-center mb-32 relative z-10">

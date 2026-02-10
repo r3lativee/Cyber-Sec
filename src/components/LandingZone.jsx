@@ -2,10 +2,10 @@ import React, { useEffect, useRef, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
-import { Scene } from './three/Scene'
+import { BackgroundFX } from './three/BackgroundFX'
 
 
-export function Hero() {
+export function LandingZone() {
     const containerRef = useRef(null)
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export function Hero() {
                     eventPrefix="client"
                 >
                     <Suspense fallback={null}>
-                        <Scene />
+                        <BackgroundFX />
                     </Suspense>
                 </Canvas>
             </div>

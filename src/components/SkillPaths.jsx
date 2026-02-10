@@ -16,7 +16,7 @@ const learningPaths = [
     }
 ]
 
-export function Photography() {
+export function SkillPaths() {
     return (
         <section id="resources" className="relative py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">

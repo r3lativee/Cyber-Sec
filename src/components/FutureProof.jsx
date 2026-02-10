@@ -20,7 +20,7 @@ const features = [
     }
 ]
 
-export function About() {
+export function FutureProof() {
     const sectionRef = useRef(null)
 
     useEffect(() => {

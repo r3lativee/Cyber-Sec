@@ -8,7 +8,7 @@ const labProtocols = [
     { id: 4, url: 'https://images.unsplash.com/photo-1510511459019-5dee995d3042?q=80&w=2070', title: 'Security Audits' },
 ]
 
-export function ThreeDGallery() {
+export function SecureLabs() {
     return (
         <section id="labs" className="relative min-h-screen py-32 bg-background overflow-hidden border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto relative z-10">

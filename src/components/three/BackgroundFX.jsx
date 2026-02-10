@@ -77,7 +77,7 @@ const fragmentShader = `
   }
 `
 
-export function Scene() {
+export function BackgroundFX() {
     const meshRef = useRef()
     const { size } = useThree()
     const [iconIndex, setIconIndex] = useState(0)

@@ -29,7 +29,7 @@ const platformFeatures = [
     }
 ]
 
-export function WebDev() {
+export function Backbone() {
     return (
         <section id="products" className="relative min-h-screen py-32 px-6 bg-background border-t border-white/5">
             <div className="max-w-7xl mx-auto">

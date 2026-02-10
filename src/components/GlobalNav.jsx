@@ -10,7 +10,7 @@ const navLinks = [
     { name: 'Blog', href: '#blog' },
 ]
 
-export default function Navbar() {
+export default function GlobalNav() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 

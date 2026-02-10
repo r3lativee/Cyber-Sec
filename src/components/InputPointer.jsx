@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-export default function CustomCursor() {
+export default function InputPointer() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
     const [isPointer, setIsPointer] = useState(false)
 

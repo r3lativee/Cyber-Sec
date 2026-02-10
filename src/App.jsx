@@ -3,16 +3,15 @@ import { Canvas } from '@react-three/fiber'
 import { ScrollControls, Scroll } from '@react-three/drei'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Hero } from './components/Hero'
-import { About } from './components/About'
-import { ThreeDGallery } from './components/ThreeDGallery'
-import { Photography } from './components/Photography'
-import { WebDev } from './components/WebDev'
-import { Experience } from './components/Experience'
-import { Contact } from './components/Contact'
-import { Scene } from './components/three/Scene'
-import Navbar from './components/Navbar'
-import CustomCursor from './components/CustomCursor'
+import { LandingZone } from './components/LandingZone'
+import { FutureProof } from './components/FutureProof'
+import { SecureLabs } from './components/SecureLabs'
+import { SkillPaths } from './components/SkillPaths'
+import { Backbone } from './components/Backbone'
+import { TrustMatrix } from './components/TrustMatrix'
+import { Communications } from './components/Communications'
+import GlobalNav from './components/GlobalNav'
+import InputPointer from './components/InputPointer'
 import Lenis from 'lenis'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -52,17 +51,17 @@ function App() {
 
   return (
     <div className="relative w-full min-h-screen bg-background">
-      <CustomCursor />
-      <Navbar />
+      <InputPointer />
+      <GlobalNav />
 
       <main className="relative z-10">
-        <Hero />
-        <About />
-        <ThreeDGallery />
-        <Photography />
-        <WebDev />
-        <Experience />
-        <Contact />
+        <LandingZone />
+        <FutureProof />
+        <SecureLabs />
+        <SkillPaths />
+        <Backbone />
+        <TrustMatrix />
+        <Communications />
       </main>
 
       {/* Global Grain Overlay for Cinematic Look */}
