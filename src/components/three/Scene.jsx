@@ -110,35 +110,65 @@ export function Scene() {
         return [pos, src, tar, sz, rd, ish]
     }, [])
 
-    // Cyber Research Shape Generators
+    // Cybersecurity Shape Generators
     const getShape = (index, i, vec) => {
         if (i >= shapeCount) {
             vec.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
             return
         }
 
+        const r = 10
         if (index === 0) {
-            // 1. Digital Core (Dodecahedron-like nodes)
+            // 1. Cyber Globe (Latitude/Longitude Wireframe)
             const phi = Math.acos(-1 + (2 * i) / shapeCount)
             const theta = Math.sqrt(shapeCount * Math.PI) * phi
-            const r = 9
+
+            // Snape to recreate wireframe lines (meridians and parallels)
+            let lon = theta
+            let lat = phi
+
+            // Every N-th particle follows a line
+            if (i % 2 === 0) {
+                lon = Math.round(lon / (Math.PI / 6)) * (Math.PI / 6) // Snap to 12 meridians
+            } else {
+                lat = Math.round(lat / (Math.PI / 10)) * (Math.PI / 10) // Snap to 10 parallels
+            }
+
             vec.set(
-                r * Math.cos(theta) * Math.sin(phi),
-                r * Math.sin(theta) * Math.sin(phi),
-                r * Math.cos(phi)
+                r * Math.cos(lon) * Math.sin(lat),
+                r * Math.sin(lon) * Math.sin(lat),
+                r * Math.cos(lat)
             )
         } else if (index === 1) {
-            // 2. Data Streams (Vertical tubes/lines)
-            const column = i % 8
-            const r = 2 + Math.random() * 0.5
-            const theta = (column / 8) * Math.PI * 2
-            const y = ((i / shapeCount) - 0.5) * 25
-            vec.set(Math.cos(theta) * r, y, Math.sin(theta) * r)
+            // 2. Security Shield (Hexagonal Honeycomb Mesh)
+            const gridSize = 35
+            const col = i % gridSize
+            const row = Math.floor(i / gridSize)
+
+            const hexX = (col - gridSize / 2) * 0.8
+            let hexY = (row - gridSize / 2) * 0.7
+            if (col % 2 === 0) hexY += 0.35 // Offset for honeycomb
+
+            vec.set(hexX, hexY, Math.sin(col * 0.5 + row * 0.5) * 0.5)
         } else if (index === 2) {
-            // 3. Network Mesh (Flat technical plane)
-            const row = Math.floor(i / 70)
-            const col = i % 70
-            vec.set((col - 35) * 0.4, (row - 35) * 0.4, 0)
+            // 3. Encryption Cube (Data Vault Wireframe)
+            // Distribute particles along the edges of a cube
+            const edgeIndex = i % 12
+            const posOnEdge = (i / shapeCount) * 12 % 1
+            const size = 7
+
+            if (edgeIndex === 0) vec.set(-size, -size, -size + posOnEdge * size * 2)
+            else if (edgeIndex === 1) vec.set(-size, size, -size + posOnEdge * size * 2)
+            else if (edgeIndex === 2) vec.set(size, -size, -size + posOnEdge * size * 2)
+            else if (edgeIndex === 3) vec.set(size, size, -size + posOnEdge * size * 2)
+            else if (edgeIndex === 4) vec.set(-size, -size + posOnEdge * size * 2, -size)
+            else if (edgeIndex === 5) vec.set(-size, -size + posOnEdge * size * 2, size)
+            else if (edgeIndex === 6) vec.set(size, -size + posOnEdge * size * 2, -size)
+            else if (edgeIndex === 7) vec.set(size, -size + posOnEdge * size * 2, size)
+            else if (edgeIndex === 8) vec.set(-size + posOnEdge * size * 2, -size, -size)
+            else if (edgeIndex === 9) vec.set(-size + posOnEdge * size * 2, -size, size)
+            else if (edgeIndex === 10) vec.set(-size + posOnEdge * size * 2, size, -size)
+            else if (edgeIndex === 11) vec.set(-size + posOnEdge * size * 2, size, size)
         }
     }
 
