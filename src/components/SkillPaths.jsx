@@ -28,7 +28,7 @@ export function SkillPaths() {
                         </span>
                     </div>
                     <h2 className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
-                        FOLLOW OUR <br /> <span className="text-primary italic">LEARNING PATHS</span>
+                        FOLLOW OUR <br /> <span className="text-primary ">LEARNING PATHS</span>
                     </h2>
                 </div>
 

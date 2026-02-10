@@ -55,7 +55,7 @@ export function FutureProof() {
                         </div>
                         <h2 className="text-5xl md:text-7xl font-bold font-heading mb-12 tracking-tighter uppercase leading-tight">
                             BATTLE-TESTED <br />
-                            <span className="text-primary italic">SECURITY</span> <br />
+                            <span className="text-primary ">SECURITY</span> <br />
                             LABORATORIES
                         </h2>
                         <p className="text-muted text-lg md:text-xl font-mono leading-relaxed mb-12 opacity-80">

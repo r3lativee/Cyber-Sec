@@ -51,7 +51,7 @@ export function LandingZone() {
 
                     <h1 className="text-7xl md:text-9xl lg:text-[10rem] font-bold font-heading leading-[0.85] tracking-tighter stagger-text uppercase">
                         MASTER <br />
-                        <span className="text-primary italic">CYBERSECURITY</span> <br />
+                        <span className="text-primary ">CYBERSECURITY</span> <br />
                         SKILLS
                     </h1>
 

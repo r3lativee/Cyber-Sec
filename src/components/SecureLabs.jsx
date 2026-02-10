@@ -64,7 +64,7 @@ export function SecureLabs() {
                         </span>
                     </div>
                     <h2 className="text-5xl md:text-8xl font-bold font-heading mb-8 tracking-tighter leading-none uppercase">
-                        START YOUR <br /> <span className="text-primary italic">LEARNING JOURNEY</span>
+                        START YOUR <br /> <span className="text-primary ">LEARNING JOURNEY</span>
                     </h2>
                     <p className="text-muted text-lg font-mono max-w-2xl opacity-80 leading-relaxed border-l border-white/10 pl-6">
                         <span className="text-primary mr-2">{">"}</span> Choose from our carefully crafted labs designed to challenge and improve your cybersecurity skills.
