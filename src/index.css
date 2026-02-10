@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0A0A0A;
-  --color-foreground: #EDEDED;
-  --color-muted: #9A9A9A;
-  --color-accent-neon: #4FD1FF;
-  --color-accent-secondary: #7C7CFF;
+  --color-background: #0B0F14;
+  --color-foreground: #E6EDF3;
+  --color-muted: #9BA4AE;
+  --color-primary: #00E5FF;
+  --color-secondary: #6C63FF;
+  --color-accent: #00FF9C;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
 
-  --font-heading: "Outfit", "Inter", sans-serif;
-  --font-body: "Inter", sans-serif;
-
-  --accent-neon: #4FD1FF;
-  --accent-secondary: #7C7CFF;
+  --font-heading: "Inter", "SF Pro Display", system-ui, sans-serif;
+  --font-body: "Inter", "SF Pro Display", system-ui, sans-serif;
 }
 
 @layer base {
   :root {
-    --background: #0A0A0A;
-    --foreground: #EDEDED;
-    --muted: #9A9A9A;
-    --accent-neon: #4FD1FF;
-    --accent-secondary: #7C7CFF;
+    --background: #0B0F14;
+    --foreground: #E6EDF3;
+    --muted: #9BA4AE;
+    --primary: #00E5FF;
+    --secondary: #6C63FF;
+    --accent: #00FF9C;
   }
 
   body {
@@ -38,19 +38,20 @@
   .font-heading {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
+    font-weight: 700;
   }
 }
 
 @layer components {
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border-subtle);
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, var(--color-accent-neon), var(--color-accent-secondary));
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
