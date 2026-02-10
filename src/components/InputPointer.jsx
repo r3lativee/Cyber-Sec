@@ -23,7 +23,7 @@ export default function InputPointer() {
                     x: mousePos.x - 16,
                     y: mousePos.y - 16,
                     scale: isPointer ? 1.5 : 1,
-                    backgroundColor: isPointer ? 'rgba(0, 229, 255, 0.2)' : 'rgba(0, 229, 255, 0)',
+                    backgroundColor: isPointer ? 'rgba(159, 239, 0, 0.2)' : 'rgba(159, 239, 0, 0)',
                 }}
                 transition={{ type: 'spring', damping: 20, stiffness: 200, mass: 0.5 }}
             />

@@ -23,30 +23,33 @@ export default function GlobalNav() {
     }, [])
 
     return (
-        <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'py-4 bg-background/90 backdrop-blur-xl border-b border-white/[0.03]' : 'py-8 bg-transparent'}`}>
+        <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${isScrolled ? 'py-4 bg-[#0D1117]/95 backdrop-blur-md border-b border-primary/10' : 'py-8 bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                <a href="#" className="text-xl md:text-2xl font-black font-heading tracking-[0.1em] group flex items-center gap-2">
-                    <div className="w-6 h-6 bg-primary rounded-sm hidden md:block"></div>
-                    <span className="text-white">BUGTHRIVE™</span>
-                    <span className="text-primary opacity-80 group-hover:opacity-100 transition-opacity uppercase">Labs</span>
+                <a href="#" className="group">
+                    <img
+                        src="/assets/images/Full-word_11zon.png"
+                        alt="Cyber-Sec Academy"
+                        className="h-8 md:h-10 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
+                    />
                 </a>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex gap-10 items-center">
+                <div className="hidden md:flex gap-10 items-center font-mono">
                     {navLinks.map((link) => (
                         <a
                             key={link.name}
                             href={link.href}
-                            className="text-[10px] uppercase tracking-[0.2em] font-heading text-muted hover:text-primary transition-all font-bold"
+                            className="text-[11px] uppercase tracking-widest text-muted hover:text-primary transition-all font-bold relative group"
                         >
                             {link.name}
+                            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full"></span>
                         </a>
                     ))}
-                    <div className="flex items-center gap-4 ml-4">
-                        <button className="text-[10px] uppercase tracking-widest font-heading text-muted hover:text-white transition-all font-bold">
+                    <div className="flex items-center gap-6 ml-6 border-l border-white/10 pl-6">
+                        <button className="text-[11px] uppercase tracking-widest text-muted hover:text-white transition-all font-bold">
                             Login
                         </button>
-                        <button className="px-5 py-2 rounded-md bg-primary text-background text-[9px] uppercase tracking-widest font-heading hover:shadow-[0_0_15px_rgba(0,255,156,0.4)] transition-all font-bold">
+                        <button className="px-6 py-2 bg-primary text-background text-[11px] uppercase tracking-widest font-bold transition-all hover:brightness-110">
                             Get Started
                         </button>
                     </div>

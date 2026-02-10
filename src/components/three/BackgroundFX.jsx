@@ -71,8 +71,8 @@ const fragmentShader = `
     float r = distance(gl_PointCoord, vec2(0.5));
     if (r > 0.45) discard; // Sharper edges
     
-    // Brighter Hacker Green with a touch of white for luminance
-    vec3 color = vec3(0.1, 1.0, 0.7); 
+    // Hack The Box Green (#9FEF00)
+    vec3 color = vec3(0.62, 0.94, 0.0); 
     gl_FragColor = vec4(color, vOpacity);
   }
 `

@@ -20,68 +20,90 @@ export function SecureLabs() {
                         viewport={{ once: true }}
                         className="max-w-3xl"
                     >
-                        <span className="text-secondary font-heading text-xs uppercase tracking-[0.4em] mb-6 block font-bold">
-                            // FEATURED LABS
-                        </span>
-                        <h2 className="text-5xl md:text-8xl font-black font-heading mb-8 tracking-tighter leading-[0.85] uppercase">
-                            Secure <br /> <span className="text-gradient">Training</span> <br /> Environments
+                        <div className="flex items-center gap-3 mb-6">
+                            <span className="w-12 h-[1px] bg-primary"></span>
+                            <span className="text-primary font-mono text-xs uppercase tracking-[0.4em] font-bold">
+                                // LIVE PENETRATION LABS
+                            </span>
+                        </div>
+                        <h2 className="text-5xl md:text-8xl font-bold font-heading mb-12 tracking-tighter leading-[0.85] uppercase">
+                            IMMERSE <br /> <span className="text-primary italic">IN REAL</span> <br /> SCENARIOS
                         </h2>
-                        <div className="p-8 md:p-12 rounded-2xl glass border border-primary/20 bg-primary/5 mb-12 relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px]"></div>
-                            <div className="flex items-center gap-4 mb-6">
-                                <span className="px-3 py-1 rounded bg-yellow-500/20 text-yellow-500 text-[10px] font-bold uppercase tracking-widest">Medium</span>
-                                <span className="text-muted text-[10px] font-bold uppercase tracking-widest">30 min</span>
-                                <span className="text-primary text-[10px] font-bold uppercase tracking-widest ml-auto">1 completed</span>
+
+                        <div className="relative bg-[#151D29] border border-white/5 p-8 md:p-12 mb-12 overflow-hidden group">
+                            {/* Technical Grid Overlay */}
+                            <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#9FEF00_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-4 mb-8 font-mono">
+                                    <span className="px-3 py-1 bg-yellow-500/10 text-yellow-500 text-[10px] font-bold uppercase tracking-widest border border-yellow-500/20">Difficult: Medium</span>
+                                    <span className="text-muted text-[10px] font-bold uppercase tracking-widest">ETA: 60 MIN</span>
+                                    <span className="ml-auto flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                        <span className="text-primary text-[10px] font-bold uppercase tracking-widest">SERVER ONLINE</span>
+                                    </span>
+                                </div>
+                                <h3 className="text-4xl font-bold font-heading text-white mb-6 uppercase tracking-tight group-hover:text-primary transition-colors">ECHODESK // <span className="text-muted opacity-50">INTERNAL ASSISTANT</span></h3>
+                                <p className="text-muted text-base leading-relaxed font-mono opacity-80 mb-10 max-w-2xl">
+                                    <span className="text-primary mr-2">{">"}</span> EchoDesk is our internal assistant for all HR and IT queries. Can you dig through the noise and find what the HR Manager is trying to hide? Use the portal to get familiar with our internal systems and identify misconfigured API endpoints.
+                                </p>
+                                <div className="flex flex-wrap gap-4 font-mono">
+                                    <button className="px-8 py-4 bg-primary text-background font-bold uppercase tracking-widest text-xs transition-all hover:brightness-110">
+                                        SPAWN MACHINE
+                                    </button>
+                                    <button className="px-8 py-4 border border-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5">
+                                        DOWNLOAD VPN
+                                    </button>
+                                </div>
                             </div>
-                            <h3 className="text-3xl font-bold font-heading text-white mb-6 uppercase tracking-tight group-hover:text-primary transition-colors">EchoDesk</h3>
-                            <p className="text-muted text-base leading-relaxed font-light mb-10 max-w-2xl">
-                                EchoDesk is our new shiny internal assistant for all HR and IT queries. It helps employees track their support tickets and access company policies. Use the portal to get familiar with our internal systems. We believe in radical transparency but surely some things should remain private? Can you dig through the noise and find what the HR Manager is trying to hide?
-                            </p>
-                            <div className="flex flex-wrap gap-4">
-                                <button className="px-8 py-4 bg-primary text-background font-heading font-bold uppercase tracking-widest text-[10px] rounded hover:shadow-[0_0_25px_rgba(0,255,156,0.4)] transition-all">
-                                    Start Lab
-                                </button>
-                                <button className="px-8 py-4 border border-white/10 glass text-white font-heading font-bold uppercase tracking-widest text-[10px] rounded hover:bg-white/5 transition-all">
-                                    View All Labs
-                                </button>
-                            </div>
+
+                            {/* Decorative Corner */}
+                            <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-primary/20 transition-all duration-500 group-hover:border-primary"></div>
                         </div>
                     </motion.div>
                 </div>
 
                 {/* Lab Series Gallery */}
                 <div className="mt-20">
-                    <div className="flex justify-between items-end mb-16">
+                    <div className="flex justify-between items-end mb-16 px-4">
                         <div>
-                            <h3 className="text-3xl font-bold font-heading uppercase tracking-tighter text-white">Advanced Lab Scenarios</h3>
-                            <p className="text-muted text-xs mt-3 uppercase tracking-widest flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Choose from 150+ real-world simulations
+                            <h3 className="text-3xl font-bold font-heading uppercase tracking-tighter text-white">SYSTEMS CATALOG</h3>
+                            <p className="text-primary text-[10px] font-mono mt-3 uppercase tracking-widest font-bold">
+                                AVAILABLE SCENARIOS :: DB_QUERY_READY // TOTAL: 156
                             </p>
                         </div>
-                        <div className="h-[1px] flex-1 bg-white/5 mx-10 mb-3 hidden md:block"></div>
+                        <div className="h-[1px] flex-1 border-b border-dashed border-white/10 mx-10 mb-3 hidden md:block"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {labProtocols.map((protocol, index) => (
                             <motion.div
                                 key={protocol.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1, duration: 0.8, ease: "easeOut" }}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.1, duration: 0.5 }}
                                 viewport={{ once: true }}
-                                className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/5 glass hover:border-primary/40 transition-all duration-500"
+                                className="group relative bg-[#0D1117] border border-white/5 p-4 transition-all duration-300 hover:border-primary"
                             >
-                                <img
-                                    src={protocol.url}
-                                    alt={protocol.title}
-                                    className="w-full h-full object-cover grayscale opacity-30 transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-60"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent flex flex-col justify-end p-8">
-                                    <div className="w-10 h-[1px] bg-primary mb-4"></div>
-                                    <h4 className="text-2xl font-heading font-bold uppercase tracking-tight leading-none mb-2 text-white">{protocol.title}</h4>
-                                    <span className="text-primary text-[9px] uppercase tracking-[0.3em] font-medium font-bold">Lab Scenario // 2026</span>
+                                <div className="aspect-video mb-6 overflow-hidden relative">
+                                    <img
+                                        src={protocol.url}
+                                        alt={protocol.title}
+                                        className="w-full h-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-100"
+                                    />
+                                    <div className="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors"></div>
                                 </div>
-                                <div className="absolute inset-x-0 bottom-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between text-[8px] font-mono text-muted uppercase tracking-widest">
+                                        <span>IP: 10.10.{10 + index}.{Math.floor(Math.random() * 254)}</span>
+                                        <span className="text-primary">ACTIVE</span>
+                                    </div>
+                                    <h4 className="text-xl font-bold font-heading uppercase tracking-tight text-white group-hover:text-primary transition-colors">{protocol.title}</h4>
+                                    <div className="pt-4 border-t border-white/5 flex justify-between items-center">
+                                        <span className="text-[10px] font-mono text-muted uppercase">Lab Series // 2026</span>
+                                        <span className="text-primary font-mono text-xs opacity-0 group-hover:opacity-100 transition-opacity">_ENTER</span>
+                                    </div>
+                                </div>
                             </motion.div>
                         ))}
                     </div>

@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0B0F14;
+  --color-background: #0D1117;
   --color-foreground: #E6EDF3;
-  --color-muted: #9BA4AE;
-  --color-primary: #00FF9C;
-  --color-secondary: #00E5FF;
-  --color-accent: #00FF9C;
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-muted: #8B949E;
+  --color-primary: #9FEF00;
+  --color-secondary: #11FB79;
+  --color-accent: #9FEF00;
+  --color-border-subtle: rgba(159, 239, 0, 0.1);
+  --color-card: #151D29;
 
-  --font-heading: "Inter", "SF Pro Display", system-ui, sans-serif;
+  --font-heading: "Space Grotesk", "Inter", "SF Pro Display", system-ui, sans-serif;
   --font-body: "Inter", "SF Pro Display", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Ubuntu Mono", monospace;
 }
 
 @layer base {

@@ -21,41 +21,52 @@ export function SkillPaths() {
         <section id="resources" className="relative py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="mb-20">
-                    <span className="text-primary font-heading text-xs uppercase tracking-[0.4em] mb-4 block font-bold">
-                        // STRUCTURED LEARNING
-                    </span>
-                    <h2 className="text-4xl md:text-7xl font-black font-heading tracking-tighter uppercase leading-none">
-                        Follow Our <br /> <span className="text-gradient">Learning Paths</span>
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="w-8 h-[1px] bg-primary"></span>
+                        <span className="text-primary font-mono text-xs uppercase tracking-[0.4em] font-bold">
+                            STRUCTURED LEARNING
+                        </span>
+                    </div>
+                    <h2 className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
+                        FOLLOW OUR <br /> <span className="text-primary italic">LEARNING PATHS</span>
                     </h2>
-                    <p className="text-muted text-sm mt-6 uppercase tracking-[0.2em] font-bold">Structured pathways designed for mastery</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     {learningPaths.map((path, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, x: i === 0 ? -30 : 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="group p-10 rounded-3xl glass border border-white/[0.03] hover:border-primary/40 transition-all duration-500 overflow-hidden relative"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: i * 0.1 }}
+                            viewport={{ once: true }}
+                            className="group relative bg-[#151D29] border border-white/5 p-1 transition-all duration-500 hover:border-primary/50"
                         >
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl opacity-0 group-hover:opacity-100 transition-all"></div>
+                            {/* Accent indicator */}
+                            <div className="absolute top-0 left-0 w-[2px] h-0 bg-primary transition-all duration-500 group-hover:h-full"></div>
 
-                            <div className="flex justify-between items-start mb-10">
-                                <div className="px-4 py-2 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
-                                    {path.level}
+                            <div className="p-8 md:p-12">
+                                <div className="flex items-center justify-between mb-8 font-mono">
+                                    <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest border border-primary/20">
+                                        {path.level}
+                                    </span>
+                                    <span className="text-muted text-[10px] font-bold uppercase tracking-widest opacity-60">
+                                        {path.stats}
+                                    </span>
                                 </div>
-                                <span className="text-muted text-[10px] font-bold uppercase tracking-widest">{path.stats}</span>
+
+                                <h3 className="text-3xl font-bold font-heading mb-6 text-white group-hover:text-primary transition-colors uppercase tracking-tight">
+                                    {path.title}
+                                </h3>
+
+                                <p className="text-muted font-light leading-relaxed mb-10 text-sm md:text-base border-l border-white/10 pl-6">
+                                    {path.description}
+                                </p>
+
+                                <button className="flex items-center gap-4 text-xs font-bold text-white uppercase tracking-widest group-hover:gap-6 transition-all font-mono">
+                                    ENROLL NOW <span className="text-primary text-lg">_</span>
+                                </button>
                             </div>
-
-                            <h3 className="text-3xl font-bold font-heading mb-6 text-white group-hover:text-primary transition-colors uppercase tracking-tight">{path.title}</h3>
-                            <p className="text-muted font-light leading-relaxed mb-10">
-                                {path.description}
-                            </p>
-
-                            <button className="flex items-center gap-3 text-xs font-bold text-white uppercase tracking-widest group-hover:gap-5 transition-all">
-                                Start Learning Path <span className="text-primary">→</span>
-                            </button>
                         </motion.div>
                     ))}
                 </div>

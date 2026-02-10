@@ -21,52 +21,59 @@ export function Communications() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                 >
-                    <span className="text-primary font-heading text-xs uppercase tracking-[0.5em] mb-8 block font-bold">
-                        // JOIN THE LABS
-                    </span>
-                    <h2 className="text-5xl md:text-8xl font-black font-heading mb-12 tracking-tighter uppercase leading-none">
-                        Ready to Start <br /> <span className="text-gradient">Learning?</span>
+                    <div className="flex items-center justify-center gap-3 mb-8">
+                        <span className="w-8 h-[1px] bg-primary"></span>
+                        <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
+                            // ENTER THE ACADEMY
+                        </span>
+                        <span className="w-8 h-[1px] bg-primary"></span>
+                    </div>
+                    <h2 className="text-5xl md:text-8xl font-bold font-heading mb-12 tracking-tighter uppercase leading-none italic">
+                        READY TO <br /> <span className="text-primary not-italic">START HACKING?</span>
                     </h2>
-                    <p className="text-muted text-lg font-light max-w-2xl mx-auto mb-16 leading-relaxed">
-                        Join thousands of security professionals who trust BugThrive Labs to advance their cybersecurity skills through hands-on experience and real-world scenarios.
+                    <p className="text-muted text-lg font-mono max-w-2xl mx-auto mb-16 leading-relaxed opacity-80">
+                        <span className="text-primary mr-2">{">"}</span> Join thousands of security professionals who trust Cyber-Sec Academy to advance their skills through hands-on experience and real-world scenarios.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-6">
-                        <button className="px-10 py-5 bg-primary text-background font-heading font-bold uppercase tracking-widest text-xs rounded-lg hover:shadow-[0_0_25px_rgba(0,255,156,0.5)] transition-all">
-                            Get Started Free
+                    <div className="flex flex-wrap justify-center gap-6 font-mono">
+                        <button className="px-10 py-5 bg-primary text-background font-bold uppercase tracking-widest text-sm transition-all hover:brightness-110">
+                            SIGN UP NOW
                         </button>
-                        <button className="px-10 py-5 border border-white/10 glass text-white font-heading font-bold uppercase tracking-widest text-xs rounded-lg hover:bg-white/5 transition-all">
-                            View Pricing
+                        <button className="px-10 py-5 border border-white/10 text-white font-bold uppercase tracking-widest text-sm transition-all hover:bg-white/5">
+                            PLATFORM DEMO
                         </button>
                     </div>
                 </motion.div>
             </div>
 
             {/* Comprehensive Footer */}
-            <footer className="relative border-t border-white/5 pt-24 pb-12 bg-[#05080b]/50 backdrop-blur-3xl z-10">
+            <footer className="relative border-t border-white/5 pt-24 pb-12 bg-[#0D1117] z-10">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24 font-mono">
                         <div className="lg:col-span-2">
-                            <a href="#" className="text-2xl font-black font-heading tracking-[0.1em] mb-10 block">
-                                <span className="text-white">BUGTHRIVE</span>
-                                <span className="text-primary opacity-80 uppercase ml-2 tracking-widest text-xl">Labs</span>
+                            <a href="#" className="mb-10 block group">
+                                <img
+                                    src="/assets/images/Full-word_11zon.png"
+                                    alt="Cyber-Sec Academy"
+                                    className="h-10 w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+                                />
                             </a>
-                            <p className="text-muted font-light leading-relaxed max-w-sm mb-10 text-sm">
-                                The premier platform for cybersecurity training and bug bounty programs. Empowering the next generation of security researchers.
+                            <p className="text-muted leading-relaxed max-w-sm mb-10 text-xs opacity-70 font-mono">
+                                <span className="text-primary opacity-40">{">> "}</span> The premier platform for cybersecurity training. Empowering the next generation of security researchers through hands-on practice.
                             </p>
                             <div className="flex gap-6">
-                                <Linkedin className="w-5 h-5 text-muted hover:text-primary cursor-pointer transition-colors" />
-                                <Twitter className="w-5 h-5 text-muted hover:text-primary cursor-pointer transition-colors" />
-                                <Github className="w-5 h-5 text-muted hover:text-primary cursor-pointer transition-colors" />
+                                <Twitter className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
+                                <Linkedin className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
+                                <Github className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
                             </div>
                         </div>
 
                         {Object.entries(footerLinks).map(([title, links]) => (
                             <div key={title} className="flex flex-col">
-                                <h4 className="text-xs font-bold font-heading uppercase tracking-[0.4em] text-white mb-10">{title}</h4>
-                                <ul className="space-y-5">
+                                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-white mb-10 opacity-40">{title}</h4>
+                                <ul className="space-y-4">
                                     {links.map((link) => (
                                         <li key={link}>
-                                            <a href="#" className="text-muted hover:text-primary transition-colors text-xs font-light uppercase tracking-widest">{link}</a>
+                                            <a href="#" className="text-muted hover:text-primary transition-colors text-[11px] uppercase tracking-widest font-bold">{link}</a>
                                         </li>
                                     ))}
                                 </ul>
@@ -74,13 +81,13 @@ export function Communications() {
                         ))}
                     </div>
 
-                    <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-                        <p className="text-muted text-[10px] uppercase tracking-[0.4em] font-medium text-center md:text-left">
-                            © 2026 BugThrive. All rights reserved. | <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a> | <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+                    <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 font-mono">
+                        <p className="text-muted text-[10px] uppercase tracking-[0.2em] opacity-50">
+                            © 2026 CYBER-SEC ACADEMY. ALL RIGHTS RESERVED. // <a href="#" className="hover:text-primary transition-colors">PRIVACY_POLICY</a> // <a href="#" className="hover:text-primary transition-colors">TERMS_OF_SERVICE</a>
                         </p>
                         <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(0,255,156,0.5)]"></div>
-                            <span className="text-[10px] text-muted uppercase tracking-[0.3em] font-black">All Systems Operational</span>
+                            <div className="w-2 h-2 bg-primary animate-pulse shadow-[0_0_10px_rgba(159,239,0,0.5)]"></div>
+                            <span className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold">SYSTEMS_OPERATIONAL</span>
                         </div>
                     </div>
                 </div>
@@ -88,3 +95,4 @@ export function Communications() {
         </section>
     )
 }
+
