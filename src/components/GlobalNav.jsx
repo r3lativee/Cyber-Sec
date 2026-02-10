@@ -29,7 +29,7 @@ export default function GlobalNav() {
                     <img
                         src="/assets/images/Full-word_11zon.png"
                         alt="Cyber-Sec Academy"
-                        className="h-8 md:h-10 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
+                        className="h-12 md:h-16 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                     />
                 </a>
 

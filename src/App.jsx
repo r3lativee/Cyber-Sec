@@ -11,7 +11,6 @@ import { Backbone } from './components/Backbone'
 import { TrustMatrix } from './components/TrustMatrix'
 import { Communications } from './components/Communications'
 import GlobalNav from './components/GlobalNav'
-import InputPointer from './components/InputPointer'
 import Lenis from 'lenis'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -51,7 +50,6 @@ function App() {
 
   return (
     <div className="relative w-full min-h-screen bg-background">
-      <InputPointer />
       <GlobalNav />
 
       <main className="relative z-10">

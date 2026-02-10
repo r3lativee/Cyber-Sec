@@ -46,17 +46,17 @@ export function LandingZone() {
                 <div className="space-y-4 mb-12">
                     <div className="flex items-center gap-3 stagger-text mb-4">
                         <span className="w-12 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-sm tracking-[0.3em] font-bold">EST. 2024 // CYBER DEFENSE</span>
+                        <span className="text-primary font-mono text-sm tracking-[0.3em] font-bold">EST. 2026 // CYBER DEFENSE</span>
                     </div>
 
                     <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-bold font-heading leading-[0.85] tracking-tighter stagger-text uppercase">
-                        LEVEL UP <br />
-                        <span className="text-primary italic">YOUR TECH</span> <br />
+                        MASTER <br />
+                        <span className="text-primary italic">CYBERSECURITY</span> <br />
                         SKILLS
                     </h1>
 
                     <p className="stagger-text text-muted text-base md:text-lg font-mono leading-relaxed max-w-2xl py-2 mt-8 opacity-80">
-                        <span className="text-primary font-bold">{'>'}</span> Access the ultimate cybersecurity playground. Real-world labs, professional certification paths, and an elite community of security researchers.
+                        <span className="text-primary font-bold">{'>'}</span> Practice on real-world scenarios in our immersive security labs. From web application testing to advanced penetration testing, enhance your skills with hands-on experience.
                     </p>
                 </div>
 

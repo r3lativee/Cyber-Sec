@@ -54,7 +54,7 @@ export function Communications() {
                                 <img
                                     src="/assets/images/Full-word_11zon.png"
                                     alt="Cyber-Sec Academy"
-                                    className="h-10 w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+                                    className="h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
                                 />
                             </a>
                             <p className="text-muted leading-relaxed max-w-sm mb-10 text-xs opacity-70 font-mono">
