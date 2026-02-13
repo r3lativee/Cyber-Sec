@@ -32,7 +32,7 @@ const FADE_UP_ANIMATION_VARIANTS = {
 
 export function SkillPaths() {
     return (
-        <section id="resources" className="relative py-32 bg-background border-t border-white/5 px-6">
+        <section id="resources" className="relative py-24 md:py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial="hidden"
@@ -45,16 +45,16 @@ export function SkillPaths() {
                             }
                         }
                     }}
-                    className="mb-20"
+                    className="mb-12 md:mb-20"
                 >
                     <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                         <span className="w-8 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-xs uppercase tracking-[0.4em] font-bold">
-                            STRUCTURED LEARNING
+                        <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold">
+                            // STRUCTURED LEARNING
                         </span>
                     </motion.div>
-                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
-                        FOLLOW OUR <br /> <span className="text-primary ">LEARNING PATHS</span>
+                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-4xl sm:text-6xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-[1.1] md:leading-none">
+                        FOLLOW OUR <br className="hidden sm:block" /> <span className="text-primary ">LEARNING PATHS</span>
                     </motion.h2>
                 </motion.div>
 

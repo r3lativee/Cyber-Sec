@@ -113,19 +113,19 @@ export function SecureLabs() {
     const displayedLabs = showAll ? labs : labs.slice(0, 3)
 
     return (
-        <section id="labs" className="relative min-h-screen py-32 bg-background overflow-hidden border-t border-white/5 px-6">
+        <section id="labs" className="relative min-h-screen py-24 md:py-32 bg-background overflow-hidden border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto relative z-10">
-                <div className="mb-20">
+                <div className="mb-16 md:mb-20">
                     <div className="flex items-center gap-3 mb-6">
                         <span className="w-12 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-xs uppercase tracking-[0.4em] font-bold">
+                        <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.4em] font-bold">
                             // TRAINING GROUND
                         </span>
                     </div>
-                    <h2 className="text-5xl md:text-8xl font-bold font-heading mb-8 tracking-tighter leading-none uppercase">
-                        START YOUR <br /> <span className="text-primary ">LEARNING JOURNEY</span>
+                    <h2 className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading mb-8 tracking-tighter leading-[1.1] md:leading-none uppercase">
+                        START YOUR <br className="hidden sm:block" /> <span className="text-primary ">LEARNING JOURNEY</span>
                     </h2>
-                    <p className="text-muted text-lg font-mono max-w-2xl opacity-80 leading-relaxed border-l border-white/10 pl-6">
+                    <p className="text-muted text-sm md:text-lg font-mono max-w-2xl opacity-80 leading-relaxed border-l border-white/10 pl-6">
                         <span className="text-primary mr-2">{">"}</span> Choose from our carefully crafted labs designed to challenge and improve your cybersecurity skills.
                     </p>
                 </div>

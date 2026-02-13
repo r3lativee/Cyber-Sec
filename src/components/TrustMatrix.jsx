@@ -50,7 +50,7 @@ const FADE_UP_ANIMATION_VARIANTS = {
 
 export function TrustMatrix() {
     return (
-        <section id="solutions" className="relative py-32 bg-background border-t border-white/5 px-6">
+        <section id="solutions" className="relative py-24 md:py-32 bg-background border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial="hidden"
@@ -63,20 +63,20 @@ export function TrustMatrix() {
                             }
                         }
                     }}
-                    className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
+                    className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-20 gap-8"
                 >
                     <div>
                         <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                             <span className="w-8 h-[1px] bg-primary"></span>
-                            <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
+                            <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold">
                                 // ELITE TRAINING MODULES
                             </span>
                         </motion.div>
-                        <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-none">
-                            WHY JOIN <br /> <span className="text-primary ">CYBER-SEC ACADEMY?</span>
+                        <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-4xl sm:text-6xl md:text-7xl font-bold font-heading tracking-tighter uppercase leading-[1.1] md:leading-none">
+                            WHY JOIN <br className="hidden sm:block" /> <span className="text-primary ">CYBER-SEC ACADEMY?</span>
                         </motion.h2>
                     </div>
-                    <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted max-w-sm mb-2 text-sm md:text-base leading-relaxed font-mono opacity-80 border-l border-white/10 pl-6">
+                    <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted max-w-sm mb-2 text-xs md:text-base leading-relaxed font-mono opacity-80 border-l border-white/10 pl-6">
                         <span className="text-primary">{'>'}</span> Experience the most comprehensive cybersecurity training platform with real-world scenarios designed to challenge your skills.
                     </motion.p>
                 </motion.div>

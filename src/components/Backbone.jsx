@@ -45,7 +45,7 @@ const FADE_UP_ANIMATION_VARIANTS = {
 
 export function Backbone() {
     return (
-        <section id="products" className="relative min-h-screen py-32 px-6 bg-background border-t border-white/5">
+        <section id="products" className="relative min-h-screen py-24 md:py-32 px-6 bg-background border-t border-white/5">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial="hidden"
@@ -58,16 +58,16 @@ export function Backbone() {
                             }
                         }
                     }}
-                    className="mb-20"
+                    className="mb-12 md:mb-20"
                 >
                     <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-4">
                         <span className="w-8 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
+                        <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold">
                             // SYSTEM ARCHITECTURE
                         </span>
                     </motion.div>
-                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-8xl font-bold font-heading tracking-tighter uppercase leading-none">
-                        PLATFORM <br /> <span className="text-primary ">INFRASTRUCTURE</span>
+                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading tracking-tighter uppercase leading-[1.1] md:leading-none">
+                        PLATFORM <br className="hidden sm:block" /> <span className="text-primary ">INFRASTRUCTURE</span>
                     </motion.h2>
                 </motion.div>
 
@@ -83,17 +83,17 @@ export function Backbone() {
                                 ease: [0.23, 1, 0.32, 1]
                             }}
                             viewport={{ once: true, margin: "-50px" }}
-                            className="group relative p-8 bg-[#151D29] border border-white/5 transition-all duration-300 hover:border-primary/40"
+                            className="group relative p-6 md:p-8 bg-[#151D29] border border-white/5 transition-all duration-300 hover:border-primary/40"
                         >
                             <div className="relative z-10">
-                                <div className="w-12 h-12 border border-primary/20 flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-background transition-all duration-300">
+                                <div className="w-10 h-10 md:w-12 md:h-12 border border-primary/20 flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-background transition-all duration-300">
                                     {feature.icon}
                                 </div>
                                 <span className="text-muted text-[10px] uppercase tracking-[0.2em] mb-2 block font-mono font-bold">
                                     {feature.category}
                                 </span>
-                                <h3 className="text-2xl font-bold mb-4 font-heading uppercase text-white group-hover:text-primary transition-colors">{feature.title}</h3>
-                                <p className="text-muted mb-8 line-clamp-3 font-mono opacity-80 text-sm leading-relaxed border-l border-white/10 pl-4">
+                                <h3 className="text-xl md:text-2xl font-bold mb-4 font-heading uppercase text-white group-hover:text-primary transition-colors">{feature.title}</h3>
+                                <p className="text-muted mb-8 line-clamp-3 font-mono opacity-80 text-xs md:text-sm leading-relaxed border-l border-white/10 pl-4">
                                     {feature.description}
                                 </p>
 
@@ -115,9 +115,9 @@ export function Backbone() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-                    className="mt-20 p-8 md:p-12 bg-[#0D1117] relative overflow-hidden border border-white/5"
+                    className="mt-12 md:mt-20 p-6 md:p-12 bg-[#0D1117] relative overflow-hidden border border-white/5"
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                         <div>
                             <h3 className="text-3xl font-bold mb-6 font-heading uppercase tracking-tight text-white italic">CORE CAPABILITIES</h3>
                             <p className="text-muted mb-8 leading-relaxed font-mono opacity-80 text-sm">

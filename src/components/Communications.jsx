@@ -24,8 +24,8 @@ const FADE_UP_ANIMATION_VARIANTS = {
 
 export function Communications() {
     return (
-        <section id="contact" className="relative bg-background overflow-hidden flex flex-col pt-32">
-            <div className="max-w-7xl mx-auto px-6 w-full text-center mb-32 relative z-10">
+        <section id="contact" className="relative bg-background overflow-hidden flex flex-col pt-24 md:pt-32">
+            <div className="max-w-7xl mx-auto px-6 w-full text-center mb-24 md:mb-32 relative z-10">
                 <motion.div
                     initial="hidden"
                     whileInView="show"
@@ -40,22 +40,22 @@ export function Communications() {
                 >
                     <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center justify-center gap-3 mb-8">
                         <span className="w-8 h-[1px] bg-primary"></span>
-                        <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
+                        <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold">
                             // ENTER THE ACADEMY
                         </span>
                         <span className="w-8 h-[1px] bg-primary"></span>
                     </motion.div>
-                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-8xl font-bold font-heading mb-12 tracking-tighter uppercase leading-none italic">
+                    <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-4xl sm:text-6xl md:text-8xl font-bold font-heading mb-10 md:mb-12 tracking-tighter uppercase leading-[1.1] md:leading-none italic">
                         READY TO <br /> <span className="text-primary not-italic">START HACKING?</span>
                     </motion.h2>
-                    <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted text-lg font-mono max-w-2xl mx-auto mb-16 leading-relaxed opacity-80">
+                    <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted text-sm md:text-lg font-mono max-w-2xl mx-auto mb-12 md:mb-16 leading-relaxed opacity-80">
                         <span className="text-primary mr-2">{">"}</span> Join thousands of security professionals who trust Cyber-Sec Academy to advance their skills through hands-on experience and real-world scenarios.
                     </motion.p>
-                    <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex flex-wrap justify-center gap-6 font-mono">
-                        <button className="px-10 py-5 bg-primary text-background font-bold uppercase tracking-widest text-sm transition-all hover:brightness-110">
+                    <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 font-mono">
+                        <button className="px-10 py-5 bg-primary text-background font-bold uppercase tracking-widest text-xs md:text-sm transition-all hover:brightness-110 w-full sm:w-auto text-center">
                             SIGN UP NOW
                         </button>
-                        <button className="px-10 py-5 border border-white/10 text-white font-bold uppercase tracking-widest text-sm transition-all hover:bg-white/5">
+                        <button className="px-10 py-5 border border-white/10 text-white font-bold uppercase tracking-widest text-xs md:text-sm transition-all hover:bg-white/5 w-full sm:w-auto text-center">
                             PLATFORM DEMO
                         </button>
                     </motion.div>
@@ -73,17 +73,17 @@ export function Communications() {
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24 font-mono"
                     >
                         <div className="lg:col-span-2">
-                            <a href="#" className="mb-10 block group">
+                            <a href="#" className="mb-6 md:mb-10 block group">
                                 <img
                                     src="/assets/images/Full-word_11zon.png"
                                     alt="Cyber-Sec Academy"
-                                    className="h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+                                    className="h-10 md:h-12 lg:h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-all"
                                 />
                             </a>
-                            <p className="text-muted leading-relaxed max-w-sm mb-10 text-xs opacity-70 font-mono">
+                            <p className="text-muted leading-relaxed max-w-sm mb-8 md:mb-10 text-[10px] md:text-xs opacity-70 font-mono">
                                 <span className="text-primary opacity-40">{">> "}</span> The premier platform for cybersecurity training. Empowering the next generation of security researchers through hands-on practice.
                             </p>
-                            <div className="flex gap-6">
+                            <div className="flex gap-6 mb-8 lg:mb-0">
                                 <Twitter className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
                                 <Linkedin className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
                                 <Github className="w-4 h-4 text-muted hover:text-primary cursor-pointer transition-colors" />
@@ -92,11 +92,11 @@ export function Communications() {
 
                         {Object.entries(footerLinks).map(([title, links], groupIdx) => (
                             <div key={title} className="flex flex-col">
-                                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-white mb-10 opacity-40">{title}</h4>
-                                <ul className="space-y-4">
+                                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-white mb-6 md:mb-10 opacity-40">{title}</h4>
+                                <ul className="space-y-3 md:space-y-4">
                                     {links.map((link, i) => (
                                         <li key={link}>
-                                            <a href="#" className="text-muted hover:text-primary transition-colors text-[11px] uppercase tracking-widest font-bold">{link}</a>
+                                            <a href="#" className="text-muted hover:text-primary transition-colors text-[10px] md:text-[11px] uppercase tracking-widest font-bold">{link}</a>
                                         </li>
                                     ))}
                                 </ul>

@@ -32,9 +32,9 @@ const FADE_UP_ANIMATION_VARIANTS = {
 
 export function FutureProof() {
     return (
-        <section id="about" className="relative py-32 bg-background overflow-hidden border-t border-white/5 px-6">
+        <section id="about" className="relative py-24 md:py-32 bg-background overflow-hidden border-t border-white/5 px-6">
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
                     <motion.div
                         initial="hidden"
                         whileInView="show"
@@ -49,23 +49,23 @@ export function FutureProof() {
                     >
                         <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex items-center gap-3 mb-8">
                             <span className="w-12 h-[1px] bg-primary"></span>
-                            <span className="text-primary font-mono text-xs uppercase tracking-[0.5em] font-bold">
+                            <span className="text-primary font-mono text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold">
                                 // ADVANCED TRAINING ENVIRONMENT
                             </span>
                         </motion.div>
-                        <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-5xl md:text-7xl font-bold font-heading mb-12 tracking-tighter uppercase leading-tight">
-                            BATTLE-TESTED <br />
-                            <span className="text-primary ">SECURITY</span> <br />
+                        <motion.h2 variants={FADE_UP_ANIMATION_VARIANTS} className="text-4xl sm:text-6xl md:text-7xl font-bold font-heading mb-8 md:mb-12 tracking-tighter uppercase leading-[1.1] md:leading-tight">
+                            BATTLE-TESTED <br className="hidden sm:block" />
+                            <span className="text-primary ">SECURITY</span> <br className="hidden sm:block" />
                             LABORATORIES
                         </motion.h2>
-                        <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted text-lg md:text-xl font-mono leading-relaxed mb-12 opacity-80">
+                        <motion.p variants={FADE_UP_ANIMATION_VARIANTS} className="text-muted text-base md:text-xl font-mono leading-relaxed mb-10 md:mb-12 opacity-80">
                             Immerse yourself in cutting-edge cybersecurity scenarios with our advanced training environment and real-world simulations.
                         </motion.p>
-                        <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex flex-wrap gap-4 font-mono">
-                            <button className="px-8 py-4 bg-primary text-background font-bold uppercase tracking-widest text-xs transition-all hover:brightness-110">
+                        <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="flex flex-col sm:flex-row gap-4 font-mono">
+                            <button className="px-8 py-4 bg-primary text-background font-bold uppercase tracking-widest text-xs transition-all hover:brightness-110 w-full sm:w-auto text-center">
                                 JOIN THE ACADEMY
                             </button>
-                            <button className="px-8 py-4 border border-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5">
+                            <button className="px-8 py-4 border border-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5 w-full sm:w-auto text-center">
                                 VIEW CATALOG
                             </button>
                         </motion.div>
