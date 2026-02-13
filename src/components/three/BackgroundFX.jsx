@@ -119,19 +119,18 @@ export function BackgroundFX() {
 
         const r = 10
         if (index === 0) {
-            // 1. Cyber Globe (Latitude/Longitude Wireframe)
+            // 1. Cyber Globe (World)
             const phi = Math.acos(-1 + (2 * i) / shapeCount)
             const theta = Math.sqrt(shapeCount * Math.PI) * phi
 
-            // Snape to recreate wireframe lines (meridians and parallels)
             let lon = theta
             let lat = phi
 
-            // Every N-th particle follows a line
+            // Wireframe effect
             if (i % 2 === 0) {
-                lon = Math.round(lon / (Math.PI / 6)) * (Math.PI / 6) // Snap to 12 meridians
+                lon = Math.round(lon / (Math.PI / 8)) * (Math.PI / 8)
             } else {
-                lat = Math.round(lat / (Math.PI / 10)) * (Math.PI / 10) // Snap to 10 parallels
+                lat = Math.round(lat / (Math.PI / 12)) * (Math.PI / 12)
             }
 
             vec.set(
@@ -140,35 +139,74 @@ export function BackgroundFX() {
                 r * Math.cos(lat)
             )
         } else if (index === 1) {
-            // 2. Security Shield (Hexagonal Honeycomb Mesh)
-            const gridSize = 35
-            const col = i % gridSize
-            const row = Math.floor(i / gridSize)
-
-            const hexX = (col - gridSize / 2) * 0.8
-            let hexY = (row - gridSize / 2) * 0.7
-            if (col % 2 === 0) hexY += 0.35 // Offset for honeycomb
-
-            vec.set(hexX, hexY, Math.sin(col * 0.5 + row * 0.5) * 0.5)
-        } else if (index === 2) {
-            // 3. Encryption Cube (Data Vault Wireframe)
-            // Distribute particles along the edges of a cube
+            // 2. Encryption Cube (Square Wireframe)
             const edgeIndex = i % 12
             const posOnEdge = (i / shapeCount) * 12 % 1
-            const size = 7
+            const side = 8
 
-            if (edgeIndex === 0) vec.set(-size, -size, -size + posOnEdge * size * 2)
-            else if (edgeIndex === 1) vec.set(-size, size, -size + posOnEdge * size * 2)
-            else if (edgeIndex === 2) vec.set(size, -size, -size + posOnEdge * size * 2)
-            else if (edgeIndex === 3) vec.set(size, size, -size + posOnEdge * size * 2)
-            else if (edgeIndex === 4) vec.set(-size, -size + posOnEdge * size * 2, -size)
-            else if (edgeIndex === 5) vec.set(-size, -size + posOnEdge * size * 2, size)
-            else if (edgeIndex === 6) vec.set(size, -size + posOnEdge * size * 2, -size)
-            else if (edgeIndex === 7) vec.set(size, -size + posOnEdge * size * 2, size)
-            else if (edgeIndex === 8) vec.set(-size + posOnEdge * size * 2, -size, -size)
-            else if (edgeIndex === 9) vec.set(-size + posOnEdge * size * 2, -size, size)
-            else if (edgeIndex === 10) vec.set(-size + posOnEdge * size * 2, size, -size)
-            else if (edgeIndex === 11) vec.set(-size + posOnEdge * size * 2, size, size)
+            if (edgeIndex === 0) vec.set(-side, -side, -side + posOnEdge * side * 2)
+            else if (edgeIndex === 1) vec.set(-side, side, -side + posOnEdge * side * 2)
+            else if (edgeIndex === 2) vec.set(side, -side, -side + posOnEdge * side * 2)
+            else if (edgeIndex === 3) vec.set(side, side, -side + posOnEdge * side * 2)
+            else if (edgeIndex === 4) vec.set(-side, -side + posOnEdge * side * 2, -side)
+            else if (edgeIndex === 5) vec.set(-side, -side + posOnEdge * side * 2, side)
+            else if (edgeIndex === 6) vec.set(side, -side + posOnEdge * side * 2, -side)
+            else if (edgeIndex === 7) vec.set(side, -side + posOnEdge * side * 2, side)
+            else if (edgeIndex === 8) vec.set(-side + posOnEdge * side * 2, -side, -side)
+            else if (edgeIndex === 9) vec.set(-side + posOnEdge * side * 2, -side, side)
+            else if (edgeIndex === 10) vec.set(-side + posOnEdge * side * 2, side, -side)
+            else if (edgeIndex === 11) vec.set(-side + posOnEdge * side * 2, side, side)
+        } else if (index === 2) {
+            // 3. Cyber Spiderweb (Network Nodes)
+            const strandIndex = i % 8
+            const depthIndex = Math.floor(i / (shapeCount / 8))
+            const radius = (depthIndex / (shapeCount / 8)) * 12
+            const angle = (strandIndex / 8) * Math.PI * 2
+
+            // Randomly jitter between nodes vs on strands
+            if (i % 3 === 0) {
+                // Radial Spoke
+                const distOnSpoke = Math.random() * 12
+                const jitter = (Math.random() - 0.5) * 0.2
+                vec.set(
+                    Math.cos(angle) * distOnSpoke + jitter,
+                    Math.sin(angle) * distOnSpoke + jitter,
+                    (Math.random() - 0.5) * 2
+                )
+            } else {
+                // Concentric Ring
+                const ringIndex = Math.floor(Math.random() * 6)
+                const ringRadius = (ringIndex + 1) * 2
+                const randomAngle = Math.random() * Math.PI * 2
+                vec.set(
+                    Math.cos(randomAngle) * ringRadius,
+                    Math.sin(randomAngle) * ringRadius,
+                    (Math.random() - 0.5) * 1.5
+                )
+            }
+        } else if (index === 3) {
+            // 4. Security Shield (Honeycomb)
+            const gridSize = 40
+            const col = i % gridSize
+            const row = Math.floor(i / gridSize)
+            const hexX = (col - gridSize / 2) * 0.7
+            let hexY = (row - gridSize / 2) * 0.6
+            if (col % 2 === 0) hexY += 0.3
+            vec.set(hexX, hexY, Math.sin(col * 0.4 + row * 0.4) * 0.6)
+        } else if (index === 4) {
+            // 5. Digital DNA / Data Helix
+            const height = 20
+            const y = (i / shapeCount) * height - height / 2
+            const twist = 4
+            const angle = (i / shapeCount) * Math.PI * 2 * twist
+            const isSecondStrand = i % 2 === 0 ? 1 : -1
+            const spiralRadius = 5
+
+            vec.set(
+                Math.cos(angle) * spiralRadius * isSecondStrand,
+                y,
+                Math.sin(angle) * spiralRadius * isSecondStrand
+            )
         }
     }
 
@@ -183,21 +221,24 @@ export function BackgroundFX() {
         const { clock, mouse } = state
         uniforms.uTime.value = clock.getElapsedTime()
 
+        // Smooth transition easing
         if (uniforms.uTransition.value < 1) {
-            uniforms.uTransition.value += 0.005 // Faster transition
+            uniforms.uTransition.value += 0.008
         }
 
         uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.05)
         uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, mouse.y, 0.05)
 
         if (meshRef.current) {
-            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.1, 0.03)
-            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.1, 0.03)
+            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.15, 0.03)
+            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.15, 0.03)
         }
     })
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const delay = iconIndex === 0 ? 1500 : 6000 // Initial fast transition (1.5s), then 6s
+
+        const timeout = setTimeout(() => {
             if (!meshRef.current) return
             const src = meshRef.current.geometry.attributes.aSource.array
             const tar = meshRef.current.geometry.attributes.aTarget.array
@@ -206,7 +247,8 @@ export function BackgroundFX() {
             for (let i = 0; i < count * 3; i++) src[i] = tar[i]
             meshRef.current.geometry.attributes.aSource.needsUpdate = true
 
-            const next = (iconIndex + 1) % 3
+            // Cycle through 5 shapes
+            const next = (iconIndex + 1) % 5
             for (let i = 0; i < count; i++) {
                 getShape(next, i, workVec)
                 tar[i * 3] = workVec.x
@@ -217,8 +259,9 @@ export function BackgroundFX() {
 
             uniforms.uTransition.value = 0
             setIconIndex(next)
-        }, 8000) // 8 second interval
-        return () => clearInterval(interval)
+        }, delay)
+
+        return () => clearTimeout(timeout)
     }, [iconIndex])
 
     return (
