@@ -62,7 +62,6 @@ export function Communications() {
                 </motion.div>
             </div>
 
-            {/* Comprehensive Footer */}
             <footer className="relative border-t border-white/5 pt-24 pb-12 bg-[#0D1117] z-10">
                 <div className="max-w-7xl mx-auto px-6">
                     <motion.div

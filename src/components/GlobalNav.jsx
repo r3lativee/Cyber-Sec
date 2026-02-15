@@ -22,7 +22,6 @@ export default function GlobalNav() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    // Prevent scrolling when mobile menu is open
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden'
@@ -47,7 +46,6 @@ export default function GlobalNav() {
                         </span>
                     </a>
 
-                    {/* Desktop Links */}
                     <div className="hidden md:flex gap-6 lg:gap-10 items-center font-mono">
                         {navLinks.map((link) => (
                             <a
@@ -69,7 +67,6 @@ export default function GlobalNav() {
                         </div>
                     </div>
 
-                    {/* Mobile Toggle */}
                     <button
                         className="md:hidden text-white relative z-[130] p-2 -mr-2"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -80,11 +77,9 @@ export default function GlobalNav() {
                 </div>
             </nav>
 
-            {/* Mobile Menu Overlay & Drawer (Outside nav to avoid parent transparency issues) */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <div className="fixed inset-0 z-[110] md:hidden">
-                        {/* Background Overlay - High Opacity */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -93,7 +88,6 @@ export default function GlobalNav() {
                             className="absolute inset-0 bg-[#000000] z-0"
                         />
 
-                        {/* Solid Opaque Drawer */}
                         <motion.div
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
@@ -101,7 +95,6 @@ export default function GlobalNav() {
                             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                             className="absolute inset-y-0 right-0 w-[85%] max-w-sm bg-[#0D1117] border-l border-white/10 p-12 flex flex-col z-10 shadow-2xl shadow-black"
                         >
-                            {/* Inner content wrapper with guaranteed z-index */}
                             <div className="flex flex-col h-full relative z-20">
                                 <div className="mb-12">
                                     <span className="text-[10px] font-bold text-primary uppercase tracking-[0.3em] font-mono">

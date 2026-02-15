@@ -27,7 +27,6 @@ export function LandingZone() {
             ref={containerRef}
             className="relative min-h-screen w-full flex items-center justify-center overflow-hidden px-6 pt-16 md:pt-20"
         >
-            {/* Background Simulation */}
             <div className="absolute inset-0 z-0 opacity-40 select-none pointer-events-none">
                 <Canvas
                     camera={{ position: [0, 0, 20], fov: 75 }}
@@ -72,14 +71,12 @@ export function LandingZone() {
                 </div>
             </div>
 
-            {/* Matrix-like vertical noise lines */}
             <div className="absolute right-0 top-0 w-1/3 h-full opacity-10 pointer-events-none overflow-hidden">
                 <div className="w-[1px] h-full bg-primary absolute left-1/4 animate-scan"></div>
                 <div className="w-[1px] h-full bg-primary absolute left-2/4 animate-scan" style={{ animationDelay: '1s' }}></div>
                 <div className="w-[1px] h-full bg-primary absolute left-3/4 animate-scan" style={{ animationDelay: '2s' }}></div>
             </div>
 
-            {/* Seamless Bottom Fade */}
             <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-20" />
         </section>
     )

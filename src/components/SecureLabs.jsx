@@ -102,7 +102,6 @@ function LabCard({ lab, index }) {
                 </button>
             </div>
 
-            {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-white/10 group-hover:border-primary/30 transition-colors"></div>
         </motion.div>
     )

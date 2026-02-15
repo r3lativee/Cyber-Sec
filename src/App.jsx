@@ -13,6 +13,7 @@ import { Communications } from './components/Communications'
 import GlobalNav from './components/GlobalNav'
 import Lenis from 'lenis'
 
+const SIGNATURE = "MADE BY SHASHANKA GOGOI (R3LATIVEE)";
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
@@ -62,7 +63,6 @@ function App() {
         <Communications />
       </main>
 
-      {/* Global Grain Overlay for Cinematic Look */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
     </div>
   )

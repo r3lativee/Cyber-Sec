@@ -72,7 +72,6 @@ export function SkillPaths() {
                             viewport={{ once: true, margin: "-50px" }}
                             className="group relative bg-[#151D29] border border-white/5 p-1 transition-all duration-500 hover:border-primary/50"
                         >
-                            {/* Accent indicator */}
                             <div className="absolute top-0 left-0 w-[2px] h-0 bg-primary transition-all duration-500 group-hover:h-full"></div>
 
                             <div className="p-8 md:p-12">

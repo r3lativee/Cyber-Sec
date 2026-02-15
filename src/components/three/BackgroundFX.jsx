@@ -17,17 +17,13 @@ const vertexShader = `
   varying float vOpacity;
 
   void main() {
-    // 1. Determine base position
     vec3 basePos = mix(aSource, aTarget, uTransition);
 
-    // 2. Slow Organic Noise
     float noiseX = sin(uTime * 0.1 + aRandom * 100.0) * 0.4;
     float noiseY = cos(uTime * 0.1 + aRandom * 100.0) * 0.4;
     float noiseZ = sin(uTime * 0.12 + aRandom * 100.0) * 0.4;
     basePos += vec3(noiseX, noiseY, noiseZ);
 
-    // 2.1 LOCAL CIRCULAR ORBIT (Active when shape is formed)
-    // We rotate the basePos around the Z-axis slowly
     if (uTransition > 0.1) {
         float orbitAngle = uTime * 0.1 * uTransition;
         float s = sin(orbitAngle);
@@ -38,27 +34,20 @@ const vertexShader = `
         basePos.y = ny;
     }
 
-    // 3. INTERACTION: Smooth Surface Spread (Repulsion)
-    // Project mouse to world center plane
     vec3 mousePos = vec3(uMouse.x * 25.0, uMouse.y * 18.0, 0.0);
     float dist = distance(basePos, mousePos);
     
-    // Spread Radius
     float spreadRadius = 10.0;
     float push = smoothstep(spreadRadius, 0.0, dist);
     
-    // Direction points AWAY from the mouse center
     vec3 dir = normalize(basePos - mousePos);
     
-    // Reduced power and more "flat" spread feel
     vec3 finalPos = basePos + (dir * push * 4.5);
 
-    // Fade edges (High visibility for a brighter center)
     vOpacity = (smoothstep(55.0, 5.0, length(finalPos)) * 0.8 + 0.3) * (aIsShape > 0.5 ? 1.0 : 0.6);
 
     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
     
-    // Increased particle size
     gl_PointSize = aSize * uPixelRatio * (150.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
   }
@@ -69,9 +58,8 @@ const fragmentShader = `
   
   void main() {
     float r = distance(gl_PointCoord, vec2(0.5));
-    if (r > 0.45) discard; // Sharper edges
+    if (r > 0.45) discard;
     
-    // Hack The Box Green (#9FEF00)
     vec3 color = vec3(0.62, 0.94, 0.0); 
     gl_FragColor = vec4(color, vOpacity);
   }
@@ -83,10 +71,9 @@ export function BackgroundFX() {
     const [iconIndex, setIconIndex] = useState(0)
 
     const count = 30000
-    const shapeCount = 20000 // Slightly more for clearer text
+    const shapeCount = 20000
     const pixelRatio = size.width > 0 ? Math.min(window.devicePixelRatio, 2) : 1
 
-    // Text Sampling for 'BugThrive Labs'
     const textPoints = useMemo(() => {
         if (typeof document === 'undefined') return []
         const canvas = document.createElement('canvas')
@@ -94,19 +81,16 @@ export function BackgroundFX() {
         canvas.width = 800
         canvas.height = 200
 
-        // Reduce font size and scale to fit view better
         const fontSize = 85
         ctx.fillStyle = 'white'
         ctx.font = `100 ${fontSize}px "Inter", "Space Grotesk", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
 
-        // Slightly tighter spacing for the smaller font
         const text = "BugThrive Labs"
         const letterSpacing = 12 // px
         let totalWidth = ctx.measureText(text).width + (text.length - 1) * letterSpacing
 
-        // Centering logic
         let currentX = (canvas.width - totalWidth) / 2 + (ctx.measureText(text[0]).width / 2)
         for (let j = 0; j < text.length; j++) {
             ctx.fillText(text[j], currentX, 100)
@@ -117,11 +101,10 @@ export function BackgroundFX() {
 
         const imageData = ctx.getImageData(0, 0, 800, 200).data
         const pts = []
-        // High-precision sampling
         for (let y = 0; y < 200; y += 1) {
             for (let x = 0; x < 800; x += 1) {
                 const alpha = imageData[(y * 800 + x) * 4 + 3]
-                if (alpha > 190) { // Sharper threshold
+                if (alpha > 190) {
                     pts.push({
                         x: (x - 400) * 0.042, // Reduced scale to fit viewport
                         y: (100 - y) * 0.042,
@@ -140,7 +123,6 @@ export function BackgroundFX() {
         }
 
         if (index === 0) {
-            // 1. Text: BugThrive Labs
             if (textPoints.length > 0) {
                 const p = textPoints[i % textPoints.length]
                 vec.set(p.x, p.y, p.z)
@@ -148,7 +130,6 @@ export function BackgroundFX() {
                 vec.set(0, 0, 0)
             }
         } else if (index === 1) {
-            // 2. Sphere Shape (Replaced Circle)
             const phi = Math.acos(-1 + (2 * i) / shapeCount)
             const theta = Math.sqrt(shapeCount * Math.PI) * phi
             const r = 10
@@ -159,13 +140,11 @@ export function BackgroundFX() {
                 r * Math.cos(phi)
             )
         } else if (index === 2) {
-            // 3. Spiderweb Shape
             const strands = 12
             const strandIndex = i % strands
             const angle = (strandIndex / strands) * Math.PI * 2
 
             if (i % 3 === 0) {
-                // Radial Spokes
                 const distOnSpoke = Math.random() * 12
                 const jitter = (Math.random() - 0.5) * 0.3
                 vec.set(
@@ -174,11 +153,9 @@ export function BackgroundFX() {
                     (Math.random() - 0.5) * 1.5
                 )
             } else {
-                // Concentric Rings
                 const ringIndex = Math.floor(Math.random() * 8)
                 const ringRadius = (ringIndex + 1) * 1.6
                 const randomAngle = Math.random() * Math.PI * 2
-                // Snap angle closer to the web structure
                 const webAngle = Math.round(randomAngle / (Math.PI / 12)) * (Math.PI / 12)
                 vec.set(
                     Math.cos(webAngle) * ringRadius,
@@ -207,7 +184,6 @@ export function BackgroundFX() {
             pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z
             src[i * 3] = x; src[i * 3 + 1] = y; src[i * 3 + 2] = z
 
-            // Initialize target to the first shape (BugThrive Labs)
             getShape(0, i, workVec, pos)
             tar[i * 3] = workVec.x
             tar[i * 3 + 1] = workVec.y
@@ -218,7 +194,7 @@ export function BackgroundFX() {
             ish[i] = i < shapeCount ? 1.0 : 0.0
         }
         return [pos, src, tar, sz, rd, ish]
-    }, [textPoints]) // Depend on textPoints to ensure they are available for initialization
+    }, [textPoints])
 
     const uniforms = useMemo(() => ({
         uTime: { value: 0 },
@@ -231,9 +207,8 @@ export function BackgroundFX() {
         const { clock, mouse } = state
         uniforms.uTime.value = clock.getElapsedTime()
 
-        // Smooth transition easing
         if (uniforms.uTransition.value < 1) {
-            uniforms.uTransition.value += 0.007 // Slightly slower, more graceful
+            uniforms.uTransition.value += 0.007
         }
 
         uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.05)
@@ -246,7 +221,7 @@ export function BackgroundFX() {
     })
 
     useEffect(() => {
-        const delay = iconIndex === 0 ? 3000 : 7000 // Give text more time to be read
+        const delay = iconIndex === 0 ? 5000 : 6000
 
         const timeout = setTimeout(() => {
             if (!meshRef.current) return
@@ -257,7 +232,6 @@ export function BackgroundFX() {
             for (let i = 0; i < count * 3; i++) src[i] = tar[i]
             meshRef.current.geometry.attributes.aSource.needsUpdate = true
 
-            // Cycle through strictly 3 shapes
             const next = (iconIndex + 1) % 3
             for (let i = 0; i < count; i++) {
                 getShape(next, i, workVec, positions)
