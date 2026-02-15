@@ -44,14 +44,14 @@ const vertexShader = `
     float dist = distance(basePos, mousePos);
     
     // Spread Radius
-    float spreadRadius = 7.0;
+    float spreadRadius = 10.0;
     float push = smoothstep(spreadRadius, 0.0, dist);
     
     // Direction points AWAY from the mouse center
     vec3 dir = normalize(basePos - mousePos);
     
     // Reduced power and more "flat" spread feel
-    vec3 finalPos = basePos + (dir * push * 3.5);
+    vec3 finalPos = basePos + (dir * push * 4.5);
 
     // Fade edges (High visibility for a brighter center)
     vOpacity = (smoothstep(55.0, 5.0, length(finalPos)) * 0.8 + 0.3) * (aIsShape > 0.5 ? 1.0 : 0.6);
@@ -82,9 +82,112 @@ export function BackgroundFX() {
     const { size } = useThree()
     const [iconIndex, setIconIndex] = useState(0)
 
-    const count = 30000 // Increased density for more "glow"
-    const shapeCount = 10000 // More particles in the shapes
+    const count = 30000
+    const shapeCount = 20000 // Slightly more for clearer text
     const pixelRatio = size.width > 0 ? Math.min(window.devicePixelRatio, 2) : 1
+
+    // Text Sampling for 'BugThrive Labs'
+    const textPoints = useMemo(() => {
+        if (typeof document === 'undefined') return []
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        canvas.width = 800
+        canvas.height = 200
+
+        // Reduce font size and scale to fit view better
+        const fontSize = 85
+        ctx.fillStyle = 'white'
+        ctx.font = `100 ${fontSize}px "Inter", "Space Grotesk", sans-serif`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+
+        // Slightly tighter spacing for the smaller font
+        const text = "BugThrive Labs"
+        const letterSpacing = 12 // px
+        let totalWidth = ctx.measureText(text).width + (text.length - 1) * letterSpacing
+
+        // Centering logic
+        let currentX = (canvas.width - totalWidth) / 2 + (ctx.measureText(text[0]).width / 2)
+        for (let j = 0; j < text.length; j++) {
+            ctx.fillText(text[j], currentX, 100)
+            if (j < text.length - 1) {
+                currentX += (ctx.measureText(text[j]).width / 2) + (ctx.measureText(text[j + 1]).width / 2) + letterSpacing
+            }
+        }
+
+        const imageData = ctx.getImageData(0, 0, 800, 200).data
+        const pts = []
+        // High-precision sampling
+        for (let y = 0; y < 200; y += 1) {
+            for (let x = 0; x < 800; x += 1) {
+                const alpha = imageData[(y * 800 + x) * 4 + 3]
+                if (alpha > 190) { // Sharper threshold
+                    pts.push({
+                        x: (x - 400) * 0.042, // Reduced scale to fit viewport
+                        y: (100 - y) * 0.042,
+                        z: (Math.random() - 0.5) * 0.05
+                    })
+                }
+            }
+        }
+        return pts
+    }, [])
+
+    const getShape = (index, i, vec, positions) => {
+        if (i >= shapeCount) {
+            vec.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
+            return
+        }
+
+        if (index === 0) {
+            // 1. Text: BugThrive Labs
+            if (textPoints.length > 0) {
+                const p = textPoints[i % textPoints.length]
+                vec.set(p.x, p.y, p.z)
+            } else {
+                vec.set(0, 0, 0)
+            }
+        } else if (index === 1) {
+            // 2. Sphere Shape (Replaced Circle)
+            const phi = Math.acos(-1 + (2 * i) / shapeCount)
+            const theta = Math.sqrt(shapeCount * Math.PI) * phi
+            const r = 10
+
+            vec.set(
+                r * Math.cos(theta) * Math.sin(phi),
+                r * Math.sin(theta) * Math.sin(phi),
+                r * Math.cos(phi)
+            )
+        } else if (index === 2) {
+            // 3. Spiderweb Shape
+            const strands = 12
+            const strandIndex = i % strands
+            const angle = (strandIndex / strands) * Math.PI * 2
+
+            if (i % 3 === 0) {
+                // Radial Spokes
+                const distOnSpoke = Math.random() * 12
+                const jitter = (Math.random() - 0.5) * 0.3
+                vec.set(
+                    Math.cos(angle) * distOnSpoke + jitter,
+                    Math.sin(angle) * distOnSpoke + jitter,
+                    (Math.random() - 0.5) * 1.5
+                )
+            } else {
+                // Concentric Rings
+                const ringIndex = Math.floor(Math.random() * 8)
+                const ringRadius = (ringIndex + 1) * 1.6
+                const randomAngle = Math.random() * Math.PI * 2
+                // Snap angle closer to the web structure
+                const webAngle = Math.round(randomAngle / (Math.PI / 12)) * (Math.PI / 12)
+                vec.set(
+                    Math.cos(webAngle) * ringRadius,
+                    Math.sin(webAngle) * ringRadius,
+                    (Math.random() - 0.5) * 1.0
+                )
+            }
+        }
+    }
 
     const [positions, sources, targets, sizes, randoms, isShape] = useMemo(() => {
         const pos = new Float32Array(count * 3)
@@ -94,6 +197,8 @@ export function BackgroundFX() {
         const rd = new Float32Array(count)
         const ish = new Float32Array(count)
 
+        const workVec = new THREE.Vector3()
+
         for (let i = 0; i < count; i++) {
             const x = (Math.random() - 0.5) * 60
             const y = (Math.random() - 0.5) * 45
@@ -101,114 +206,19 @@ export function BackgroundFX() {
 
             pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z
             src[i * 3] = x; src[i * 3 + 1] = y; src[i * 3 + 2] = z
-            tar[i * 3] = x; tar[i * 3 + 1] = y; tar[i * 3 + 2] = z
 
-            sz[i] = 0.1 + Math.random() * 0.2 // Smaller, sharper nodes
+            // Initialize target to the first shape (BugThrive Labs)
+            getShape(0, i, workVec, pos)
+            tar[i * 3] = workVec.x
+            tar[i * 3 + 1] = workVec.y
+            tar[i * 3 + 2] = workVec.z
+
+            sz[i] = 0.12 + Math.random() * 0.22
             rd[i] = Math.random()
             ish[i] = i < shapeCount ? 1.0 : 0.0
         }
         return [pos, src, tar, sz, rd, ish]
-    }, [])
-
-    // Cybersecurity Shape Generators
-    const getShape = (index, i, vec) => {
-        if (i >= shapeCount) {
-            vec.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
-            return
-        }
-
-        const r = 10
-        if (index === 0) {
-            // 1. Cyber Globe (World)
-            const phi = Math.acos(-1 + (2 * i) / shapeCount)
-            const theta = Math.sqrt(shapeCount * Math.PI) * phi
-
-            let lon = theta
-            let lat = phi
-
-            // Wireframe effect
-            if (i % 2 === 0) {
-                lon = Math.round(lon / (Math.PI / 8)) * (Math.PI / 8)
-            } else {
-                lat = Math.round(lat / (Math.PI / 12)) * (Math.PI / 12)
-            }
-
-            vec.set(
-                r * Math.cos(lon) * Math.sin(lat),
-                r * Math.sin(lon) * Math.sin(lat),
-                r * Math.cos(lat)
-            )
-        } else if (index === 1) {
-            // 2. Encryption Cube (Square Wireframe)
-            const edgeIndex = i % 12
-            const posOnEdge = (i / shapeCount) * 12 % 1
-            const side = 8
-
-            if (edgeIndex === 0) vec.set(-side, -side, -side + posOnEdge * side * 2)
-            else if (edgeIndex === 1) vec.set(-side, side, -side + posOnEdge * side * 2)
-            else if (edgeIndex === 2) vec.set(side, -side, -side + posOnEdge * side * 2)
-            else if (edgeIndex === 3) vec.set(side, side, -side + posOnEdge * side * 2)
-            else if (edgeIndex === 4) vec.set(-side, -side + posOnEdge * side * 2, -side)
-            else if (edgeIndex === 5) vec.set(-side, -side + posOnEdge * side * 2, side)
-            else if (edgeIndex === 6) vec.set(side, -side + posOnEdge * side * 2, -side)
-            else if (edgeIndex === 7) vec.set(side, -side + posOnEdge * side * 2, side)
-            else if (edgeIndex === 8) vec.set(-side + posOnEdge * side * 2, -side, -side)
-            else if (edgeIndex === 9) vec.set(-side + posOnEdge * side * 2, -side, side)
-            else if (edgeIndex === 10) vec.set(-side + posOnEdge * side * 2, side, -side)
-            else if (edgeIndex === 11) vec.set(-side + posOnEdge * side * 2, side, side)
-        } else if (index === 2) {
-            // 3. Cyber Spiderweb (Network Nodes)
-            const strandIndex = i % 8
-            const depthIndex = Math.floor(i / (shapeCount / 8))
-            const radius = (depthIndex / (shapeCount / 8)) * 12
-            const angle = (strandIndex / 8) * Math.PI * 2
-
-            // Randomly jitter between nodes vs on strands
-            if (i % 3 === 0) {
-                // Radial Spoke
-                const distOnSpoke = Math.random() * 12
-                const jitter = (Math.random() - 0.5) * 0.2
-                vec.set(
-                    Math.cos(angle) * distOnSpoke + jitter,
-                    Math.sin(angle) * distOnSpoke + jitter,
-                    (Math.random() - 0.5) * 2
-                )
-            } else {
-                // Concentric Ring
-                const ringIndex = Math.floor(Math.random() * 6)
-                const ringRadius = (ringIndex + 1) * 2
-                const randomAngle = Math.random() * Math.PI * 2
-                vec.set(
-                    Math.cos(randomAngle) * ringRadius,
-                    Math.sin(randomAngle) * ringRadius,
-                    (Math.random() - 0.5) * 1.5
-                )
-            }
-        } else if (index === 3) {
-            // 4. Security Shield (Honeycomb)
-            const gridSize = 40
-            const col = i % gridSize
-            const row = Math.floor(i / gridSize)
-            const hexX = (col - gridSize / 2) * 0.7
-            let hexY = (row - gridSize / 2) * 0.6
-            if (col % 2 === 0) hexY += 0.3
-            vec.set(hexX, hexY, Math.sin(col * 0.4 + row * 0.4) * 0.6)
-        } else if (index === 4) {
-            // 5. Digital DNA / Data Helix
-            const height = 20
-            const y = (i / shapeCount) * height - height / 2
-            const twist = 4
-            const angle = (i / shapeCount) * Math.PI * 2 * twist
-            const isSecondStrand = i % 2 === 0 ? 1 : -1
-            const spiralRadius = 5
-
-            vec.set(
-                Math.cos(angle) * spiralRadius * isSecondStrand,
-                y,
-                Math.sin(angle) * spiralRadius * isSecondStrand
-            )
-        }
-    }
+    }, [textPoints]) // Depend on textPoints to ensure they are available for initialization
 
     const uniforms = useMemo(() => ({
         uTime: { value: 0 },
@@ -223,20 +233,20 @@ export function BackgroundFX() {
 
         // Smooth transition easing
         if (uniforms.uTransition.value < 1) {
-            uniforms.uTransition.value += 0.008
+            uniforms.uTransition.value += 0.007 // Slightly slower, more graceful
         }
 
         uniforms.uMouse.value.x = THREE.MathUtils.lerp(uniforms.uMouse.value.x, mouse.x, 0.05)
         uniforms.uMouse.value.y = THREE.MathUtils.lerp(uniforms.uMouse.value.y, mouse.y, 0.05)
 
         if (meshRef.current) {
-            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.15, 0.03)
-            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.15, 0.03)
+            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, mouse.x * 0.12, 0.03)
+            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, -mouse.y * 0.12, 0.03)
         }
     })
 
     useEffect(() => {
-        const delay = iconIndex === 0 ? 1500 : 6000 // Initial fast transition (1.5s), then 6s
+        const delay = iconIndex === 0 ? 3000 : 7000 // Give text more time to be read
 
         const timeout = setTimeout(() => {
             if (!meshRef.current) return
@@ -247,10 +257,10 @@ export function BackgroundFX() {
             for (let i = 0; i < count * 3; i++) src[i] = tar[i]
             meshRef.current.geometry.attributes.aSource.needsUpdate = true
 
-            // Cycle through 5 shapes
-            const next = (iconIndex + 1) % 5
+            // Cycle through strictly 3 shapes
+            const next = (iconIndex + 1) % 3
             for (let i = 0; i < count; i++) {
-                getShape(next, i, workVec)
+                getShape(next, i, workVec, positions)
                 tar[i * 3] = workVec.x
                 tar[i * 3 + 1] = workVec.y
                 tar[i * 3 + 2] = workVec.z
